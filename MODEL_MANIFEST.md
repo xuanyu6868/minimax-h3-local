@@ -4,19 +4,19 @@
 
 下载 URL 统一为 `https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/<path>`。以下模型均在该官方 ComfyUI 重打包仓库中实际存在。
 
-## 首选最小完整集合
+## 首选完整基础集合
 
-不含可选 Turbo LoRA。字节求和 54,069,051,479 bytes = **54.07 GB / 50.36 GiB**。
+不含可选 Turbo LoRA。五个文件的字节求和为 51,070,955,815 bytes = **51.070955815 GB / 47.563534058 GiB**（GB 按 10^9，GiB 按 2^30）。
 
 | 放置路径 / 文件名 | bytes | GiB | SHA256 (LFS oid) |
 |---|---:|---:|---|
-| diffusion_models/minimax_h3_fl2va_pruned_w6a8.safetensors | 15,983,746,636 | 14.885 | ac746a2e41628ab25afd44d2b22a7fab8d7e66cd07a01bf89ed9d74b0d3f0c35 |
-| diffusion_models/minimax_h3_ref2va_pruned_w6a8.safetensors | 15,983,746,636 | 14.885 | ece96bbbce76670ec782de84acc888fd9d9b210bd2ab97c1957b39896734f9f1 |
-| text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors | 15,687,142,551 | 14.609 | 35a88d51044231fe332301d7a62aa81e3f2cba62febeb446e2c1e3e0ef76f2c6 |
+| diffusion_models/minimax_h3_fl2va_pruned_w6a8.safetensors | 15,983,746,636 | 14.886 | ac746a2e41628ab25afd44d2b22a7fab8d7e66cd07a01bf89ed9d74b0d3f0c35 |
+| diffusion_models/minimax_h3_ref2va_pruned_w6a8.safetensors | 15,983,746,636 | 14.886 | ece96bbbce76670ec782de84acc888fd9d9b210bd2ab97c1957b39896734f9f1 |
+| text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors | 15,687,142,551 | 14.610 | 35a88d51044231fe332301d7a62aa81e3f2cba62febeb446e2c1e3e0ef76f2c6 |
 | vae/minimax_h3_video_vae_int8_convrot.safetensors | 2,811,065,184 | 2.618 | 52a2c8c73583c86e4f41cdcce3a6ad0ea562987bc0bf3d60a0cef5f5c8e60c0e |
 | vae/minimax_h3_audio_vae_fp32.safetensors | 605,254,808 | 0.564 | 8e505d95dd1561d47abd43d4238fd40d9bb1ae9e147ed0a4cba778d76ae4db48 |
 
-建议先只取 FL2VA 加共享组件，**38.09 GB / 35.47 GiB**，验证 T2V/I2V/首尾帧后再下载 Ref2VA。完整下载时预留至少 70 GiB 给权重、临时文件和校验；运行时、缓存、输入和输出另留空间。
+FL2VA 起步集合包含 FL2VA、文本编码器和双 VAE（不含 Ref2VA），合计 35,087,209,179 bytes = **35.087209179 GB / 32.677509990 GiB**。先验证 T2V/I2V/首尾帧后再下载 Ref2VA；加入 Ref2VA 即为上述完整集合。完整下载时预留至少 65 GiB 给权重、临时文件和校验；运行时、缓存、输入和输出另留空间。
 
 ## 可选 Turbo
 
@@ -25,7 +25,7 @@
 | minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors | 1,956,193,000 | 1.822 | FL2VA 8 步 | 2339acdf19bfe123f46b971ea35d367a84adb85de43627e1eceafa5a5b2b111e |
 | minimax_h3_ref2v_turbo_4step_v0.1_comfyui_bf16.safetensors | 1,956,193,000 | 1.822 | Ref2VA 4 步 | 5b9ab5ade15d0775676d01a907268a69a1468dc6033b3b0d3ded5502f3ebb84c |
 
-完整集合加这两个可选 LoRA 为 **57.98 GB / 54.00 GiB**。它们不是基础模型推理的通用依赖，但官方模板模型扫描可能列出它们。官方建议参考匹配优先时关闭 Turbo，使用 20–25 步。
+完整集合加这两个可选 LoRA 为 54,983,341,815 bytes = **54.983341815 GB / 51.207227462 GiB**。它们不是基础模型推理的通用依赖，但官方模板模型扫描可能列出它们。官方建议参考匹配优先时关闭 Turbo，使用 20–25 步。
 
 ## 加载器与工作流兼容性
 
