@@ -16,6 +16,13 @@
 10. **安全边界。** 不提交权重、媒体、虚拟环境、缓存、日志、令牌或 `prompt_optimizer.json`；不运行来源不明脚本。
 11. **Git 只提交本地报告，不自行推送。** 远程地址必须为 `https://github.com/xuanyu6868/minimax-h3-local.git`。
 
+## 第二阶段 A 新增
+
+12. **固定 ComfyUI v0.42.1 提交 `63be2f9b82ad0dac88a7ceaa28a9cf3154125a18`。** 官方稳定版，满足 W6A8 的 0.38.0+ 下限；不以“最新版”作为版本依据。
+13. **固定 PyTorch 2.10.0+cu130。** 来源为 PyTorch 官方 cu130 轮子索引；驱动报告的 CUDA UMD 13.4 不等于已安装 Toolkit。
+14. **ComfyUI 依赖必须用 `--no-deps` 安装。** 实测 `requirements.txt` 的无版本 `torch` 会把 CUDA 构建替换为 2.15.0，导致 `c10_cuda.dll` 加载失败。脚本已固化该步骤及安装后 CUDA 断言。
+15. **运行环境位于 `D:\AI\MiniMaxH3`。** 汇报仓库保持在 `d:\Minimax H3`，不改全局 Python、驱动、页面文件或系统环境变量。
+
 ## 推测 / 工程预期（未实测）
 
 - W6A8 + NVFP4-AWQ 比官方默认 INT8 ConvRot 更适合 12GB VRAM + 32GB RAM，但采样/解码峰值可能仍造成 OOM 或换页。

@@ -75,3 +75,21 @@ Memory: 726MiB / 12227MiB（审计时）
 ## 未覆盖项
 
 未进行整盘递归扫描、注册表审计或管理员权限查询。因此“未发现 ComfyUI/虚拟环境”只表示上述定向检查范围，不是全盘不存在证明。
+
+## 第二阶段 A 更新（2026-10-28）
+
+只读复查：驱动 617.42、RTX 5070 12227 MiB、审计时约 16.8 GiB 空闲内存、D: 可用 461.93 GiB。全局 Python 与 PyTorch 未改动。
+
+新建隔离环境（不在本仓库内）：
+
+| 项目 | 结果 |
+|---|---|
+| 位置 | `D:\AI\MiniMaxH3`（ComfyUI 源码 + `.venv`） |
+| ComfyUI | v0.42.1，提交 `63be2f9b82ad0dac88a7ceaa28a9cf3154125a18` |
+| Python | 3.12.10（venv） |
+| PyTorch | 2.10.0+cu130，`torch.cuda.is_available()` 为 True |
+| GPU 实算 | 4×4 CUDA 矩阵乘法 + 同步通过；能力 12.0 |
+| ComfyUI | 本机启动成功，H3 节点已注册 |
+| 模型 | 未下载，未进行加载或生成验收 |
+
+详细命令、退出码与错误修复见 [reports/phase-2a-runtime.md](reports/phase-2a-runtime.md)。

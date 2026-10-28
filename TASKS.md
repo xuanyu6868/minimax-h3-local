@@ -23,11 +23,20 @@
 - [x] 复核官方下载来源和 W6A8 的 ComfyUI 0.38.0+ 要求；未将文件存在视为本机运行成功
 - [ ] 负责人审核本次报告 diff 并明确批准推送
 
-## 第二阶段：安装前审批（未开始）
+## 第二阶段 A：隔离运行环境与 GPU 验证（已完成）
 
-- [ ] 负责人批准首选路线、安装位置和下载预算
-- [ ] 锁定 ComfyUI/PyTorch/CUDA 版本和文件来源
-- [ ] 审查所有安装脚本和自定义节点
+- [x] 固定 ComfyUI v0.42.1（`63be2f9b82ad0dac88a7ceaa28a9cf3154125a18`）
+- [x] 在 `D:\AI\MiniMaxH3` 建立独立 venv，未改动全局 Python
+- [x] 安装并验证 PyTorch 2.10.0+cu130，CUDA 张量实算与同步通过
+- [x] 修复 `requirements.txt` 覆盖 CUDA PyTorch 的问题，脚本改为 `--no-deps`
+- [x] ComfyUI 本机启动，H3 节点注册，官方模板随包安装并复制入仓库
+- [ ] 模型加载与视频生成验收（未开始，需第三阶段授权）
+- 报告：[reports/phase-2a-runtime.md](reports/phase-2a-runtime.md)
+
+## 第二阶段 B：安装前审批（未开始）
+
+- [ ] 负责人批准 FL2VA 下载预算和固定修订
+- [ ] 审查模板中 W6A8 替换步骤
 - [ ] 建立独立可回滚环境
 
 ## 第三阶段：FL2VA 基础验收（未开始）
