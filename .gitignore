@@ -1,0 +1,57 @@
+# Model weights and large media
+*.safetensors
+*.gguf
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.onnx
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.webm
+*.wav
+*.flac
+models/
+outputs/
+input/
+
+# Python / app environments
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.python-version
+
+# Caches and temporary downloads
+.cache/
+cache/
+.tmp/
+temp/
+*.tmp
+*.partial
+*.download
+*.lock
+
+# Logs and local state
+*.log
+logs/
+comfyui.log
+prompt_optimizer.json
+
+# Secrets and personal configuration
+.env
+.env.*
+*.key
+*.pem
+*credentials*
+*secret*
+*token*
+
+# OS / editor
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
