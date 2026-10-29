@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def build(width, height, length, steps, prefix, unet, prompt, first_frame=None, last_frame=None,
-          ref_images=None, ref_image_size='match'):
+          ref_images=None, ref_image_size='match', ref_audios=None):
     api = {
         '1': {'class_type': 'UNETLoader',
               'inputs': {'unet_name': unet, 'weight_dtype': 'default'}},
@@ -31,6 +31,10 @@ def build(width, height, length, steps, prefix, unet, prompt, first_frame=None, 
             node_id = str(20 + index)
             api[node_id] = {'class_type': 'LoadImage', 'inputs': {'image': ref}}
             api['5']['inputs'][f'ref_images.ref_image_{index}'] = [node_id, 0]
+        for index, clip in enumerate(ref_audios or [], start=1):
+            node_id = str(30 + index)
+            api[node_id] = {'class_type': 'LoadAudio', 'inputs': {'audio': clip}}
+            api['5']['inputs'][f'ref_audios.ref_audio_{index}'] = [node_id, 0]
     else:
         api['5'] = {'class_type': 'MiniMaxH3ImageToVideo',
                     'inputs': {'clip': ['2', 0], 'vae': ['3', 0], 'prompt': prompt,
@@ -75,13 +79,16 @@ if __name__ == '__main__':
     parser.add_argument('--ref-image', action='append', default=None,
                         help='Reference image filename under ComfyUI/input; repeat for <Picture 2>, ...')
     parser.add_argument('--ref-image-size', choices=('match', 'max'), default='match')
+    parser.add_argument('--ref-audio', action='append', default=None,
+                        help='Reference audio filename under ComfyUI/input; repeat for <Audio 2>, ...')
     args = parser.parse_args()
     data = build(args.width, args.height, args.length, args.steps, args.prefix,
                  args.unet, args.prompt, args.first_frame, args.last_frame,
-                 args.ref_image, args.ref_image_size)
+                 args.ref_image, args.ref_image_size, args.ref_audio)
     args.output.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding='utf-8')
     print(json.dumps({'output': str(args.output), 'nodes': len(data),
                       'width': args.width, 'height': args.height,
                       'length': args.length, 'steps': args.steps,
                       'unet': args.unet, 'ref_images': args.ref_image or [],
+                      'ref_audios': args.ref_audio or [],
                       'ref_image_size': args.ref_image_size if args.ref_image else None}))

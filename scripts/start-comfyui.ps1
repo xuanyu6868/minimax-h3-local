@@ -1,6 +1,9 @@
 param(
     [ValidateSet('fl2va', 'ref2va')]
-    [string]$ModelSet = 'fl2va'
+    [string]$ModelSet = 'fl2va',
+    [string[]]$ExtraArgs = @(),
+    [switch]$StopExisting,
+    [string]$PlanDir = 'D:\AI\MiniMaxH3\launches'
 )
 $ErrorActionPreference = 'Stop'
 $Root = 'D:\AI\MiniMaxH3'
@@ -17,21 +20,81 @@ $Other = if ($ModelSet -eq 'fl2va') { 'minimax_h3_ref2va_pruned_w6a8.safetensors
 $OtherPath = Join-Path $Root "ComfyUI\models\diffusion_models\$Other"
 
 $comfyArgs = @($Main, '--listen', '127.0.0.1', '--port', '8188',
-              '--disable-auto-launch', '--reserve-vram', '1.0')
+              '--disable-auto-launch', '--reserve-vram', '1.0') + $ExtraArgs
 $launch = "$Python $($comfyArgs -join ' ')"
-Write-Output "Model set: $ModelSet"
-Write-Output "Launch command: $launch"
-$record = [ordered]@{
-    captured_at_utc = (Get-Date).ToUniversalTime().ToString('o')
-    model_set       = $ModelSet
-    comfyui_commit  = (& git -C (Join-Path $Root 'ComfyUI') rev-parse HEAD)
-    python          = (& $Python -c "import sys; print(sys.version.split()[0])")
-    torch           = (& $Python -c "import torch; print(torch.__version__)")
-    launch_command  = $launch
-    unloaded_model  = $Other
-    unloaded_size   = if (Test-Path $OtherPath) { (Get-Item $OtherPath).Length } else { $null }
-}
-$record | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 (Join-Path $Root 'launch-args.json')
 
-& $Python @comfyArgs
-exit $LASTEXITCODE
+# Refuse to silently reuse an already-running server: its model set and flags
+# are unknown, and the measurements would not belong to this launch.
+function Get-ServerPid {
+    $owner = Get-NetTCPConnection -LocalPort 8188 -State Listen -ErrorAction SilentlyContinue |
+        Select-Object -First 1 -ExpandProperty OwningProcess
+    return $owner
+}
+$existing = Get-ServerPid
+if ($existing) {
+    $proc = Get-CimInstance Win32_Process -Filter "ProcessId=$existing" -ErrorAction SilentlyContinue
+    Write-Output "FOUND existing listener on 127.0.0.1:8188 pid=$existing"
+    Write-Output "  command line: $($proc.CommandLine)"
+    if (-not $StopExisting) {
+        throw 'Port 8188 is already in use. Re-run with -StopExisting to replace it, or stop it yourself.'
+    }
+    Write-Output 'Stopping the existing listener because -StopExisting was passed.'
+    Stop-Process -Id $existing -Force
+    for ($i = 0; $i -lt 60; $i++) {
+        Start-Sleep -Milliseconds 500
+        if (-not (Get-ServerPid)) { break }
+    }
+    if (Get-ServerPid) { throw "Port 8188 is still held after stopping pid=$existing" }
+    Write-Output 'Port 8188 released.'
+}
+
+# Start the server as a child we can identify. The venv launcher spawns a
+# child that runs under the base interpreter, so the first python PID is not
+# necessarily the process that serves requests; resolve the real one below.
+if (-not (Test-Path $PlanDir)) { New-Item -ItemType Directory -Path $PlanDir -Force | Out-Null }
+$stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMddTHHmmssZ')
+$logPath = Join-Path $PlanDir "$stamp-$ModelSet.log"
+$launcher = Start-Process -FilePath $Python -ArgumentList $comfyArgs -PassThru `
+    -WindowStyle Hidden -RedirectStandardOutput $logPath -RedirectStandardError "$logPath.err"
+Write-Output "Launched pid=$($launcher.Id), log=$logPath"
+
+$ready = $false
+for ($i = 0; $i -lt 240; $i++) {
+    Start-Sleep -Seconds 1
+    try {
+        $stats = (Invoke-WebRequest -Uri 'http://127.0.0.1:8188/system_stats' -TimeoutSec 3 -UseBasicParsing).Content | ConvertFrom-Json
+        $ready = $true
+        break
+    } catch { }
+}
+if (-not $ready) { throw "Server did not answer /system_stats within 240 s; see $logPath" }
+
+# The serving process is whoever owns the listening socket, not the launcher.
+$serverPid = Get-ServerPid
+if (-not $serverPid) { throw 'Server answered but no listener PID was found' }
+$serverProc = Get-CimInstance Win32_Process -Filter "ProcessId=$serverPid"
+
+$record = [ordered]@{
+    captured_at_utc         = (Get-Date).ToUniversalTime().ToString('o')
+    model_set               = $ModelSet
+    requested_command       = $launch
+    launcher_pid            = $launcher.Id
+    server_pid              = $serverPid
+    server_started_at       = $serverProc.CreationDate.ToString('o')
+    server_command_line     = $serverProc.CommandLine
+    server_executable       = (Get-Process -Id $serverPid).Path
+    reported_argv           = $stats.system.argv
+    comfyui_version         = $stats.system.comfyui_version
+    torch_version           = $stats.system.pytorch_version
+    python_version          = $stats.system.python_version
+    vram_total_mib          = [math]::Round($stats.devices[0].vram_total / 1MB, 1)
+    log                     = $logPath
+    # Not evidence of anything. The other model set is simply the file that
+    # this launch does not load; unload is proven only by VRAM/working-set
+    # readings inside the run window.
+    other_model_present_on_disk = (Test-Path $OtherPath)
+    other_model_file            = $Other
+}
+$record | ConvertTo-Json -Depth 5 | Set-Content -Encoding utf8 (Join-Path $PlanDir "$stamp-launch.json")
+$serverPid | Set-Content (Join-Path $Root 'comfyui.pid')
+$record | ConvertTo-Json -Depth 5

@@ -1,0 +1,24 @@
+{
+  "label": "preset_nopin",
+  "workflow": "d:\\Minimax H3\\workflows\\ref2va_single_ref_api.json",
+  "workflow_sha256": "0a220bd975b38190bdc7a9088e0d01e15f613768e338dcd5a872a2ef9b277485",
+  "submitted_at": "2026-10-29T22:07:43.641625+00:00",
+  "prompt_id": "874f511a-c897-4ee9-9b9e-9153eb8ced8d",
+  "result": "success",
+  "completed": true,
+  "status_str": "success",
+  "elapsed_seconds": 150.38,
+  "artifacts": [
+    {
+      "node_id": "14",
+      "filename": "ref2va_single_00003_.mp4",
+      "subfolder": "h3",
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref2va_single_00003_.mp4",
+      "exists": true,
+      "size_bytes": 719282,
+      "sha256": "f32bc5c8a6222b70bab941551753dad79ad3d1d4f099a58fe69467a6ca6c32bb"
+    }
+  ],
+  "task_completed": true,
+  "video_present": true
+}

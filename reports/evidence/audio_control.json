@@ -1,0 +1,24 @@
+{
+  "label": "audio_control",
+  "workflow": "d:\\Minimax H3\\workflows\\ref_audio_control_api.json",
+  "workflow_sha256": "4cfb223fa0fb598782b7fc344ebb3d61780aa2dd6e884b9d9b9b1b0f9c9e1f0e",
+  "submitted_at": "2026-10-29T22:23:44.155090+00:00",
+  "prompt_id": "c10147c5-003b-4622-99a6-7666cecb5420",
+  "result": "success",
+  "completed": true,
+  "status_str": "success",
+  "elapsed_seconds": 145.22,
+  "artifacts": [
+    {
+      "node_id": "14",
+      "filename": "ref_audio_control_00001_.mp4",
+      "subfolder": "h3",
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref_audio_control_00001_.mp4",
+      "exists": true,
+      "size_bytes": 1206807,
+      "sha256": "ba176905a57a6c14b445c81f41c1e74983901b67de6aaa444a4a183bb13edcb9"
+    }
+  ],
+  "task_completed": true,
+  "video_present": true
+}

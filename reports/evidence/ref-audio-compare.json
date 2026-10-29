@@ -1,0 +1,31 @@
+{
+  "frame_compare": {
+    "a": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref_audio_control_00001_.mp4",
+    "b": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref_audio_test_00001_.mp4",
+    "frames_a": 124,
+    "frames_b": 124,
+    "frames_compared": 124,
+    "identical_frames": 0,
+    "mean_abs_diff_ratio": 0.107906,
+    "max_abs_diff_ratio": 0.119724,
+    "first_frame_diff_ratio": 0.106343
+  },
+  "audio_a": {
+    "sample_rate": 32000,
+    "channels": 2,
+    "samples": 330668,
+    "duration_seconds": 5.167,
+    "rms": 0.00187,
+    "peak": 0.060435,
+    "pcm_sha256": "e0b05f69bcaaea0e0c100eace0bb9bc83a22bc24f56b124bcc70b1986e88eede"
+  },
+  "audio_b": {
+    "sample_rate": 32000,
+    "channels": 2,
+    "samples": 330668,
+    "duration_seconds": 5.167,
+    "rms": 0.199783,
+    "peak": 0.57583,
+    "pcm_sha256": "03efa68847f71134e45fcc5c78a89fb10cb96dc465d7aa17adb9553d539ea1f4"
+  }
+}

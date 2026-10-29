@@ -43,10 +43,14 @@
 | Ref2VA 权重 | 已下载并校验（15,983,746,636 bytes） |
 | 正式基线 | 736×416 / 124 帧 / 20 步 / 24fps 通过（T2V / I2V / 首尾帧） |
 | Ref2VA 参考图 | 单图 160.72 s、双图 170.23 s 通过，规格全对 |
-| Ref2VA 参考视频/音频 | 未测 |
+| 内存预设 | 默认提交峰值 49,345 MiB；`--disable-pinned-memory` 后 38,245 MiB |
+| 参考音频 | 对照 + 实验通过，124 帧全不同、音频 RMS 0.0019 → 0.1998 |
+| 界面验收 | T2V 经画布提交成功；**Ref2VA 经画布提交失败**（`ref_image_1` 扁平键） |
+| Ref2VA 参考视频 | 未测 |
 | 画质与听感 | **待人工确认** |
 
 - [阶段二 A 报告](reports/phase-2a-runtime.md)
 - [阶段三报告](reports/phase-3-fl2va-smoke.md)
 - [阶段三补正与基线](reports/phase-3b-review-fixes-baseline.md)
 - [阶段四 Ref2VA 参考图](reports/phase-4-ref2va-images.md)
+- [阶段四 B 稳定性 / 界面 / 参考音频](reports/phase-4b-stability-ui-audio.md)

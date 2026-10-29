@@ -14,6 +14,12 @@ $TorchSpec = @(
     'torchaudio==2.10.0+cu130'
 )
 
+# The lock file belongs to the reporting repository, which is not $Root. Resolve
+# it from this script's own location so the default install is reproducible.
+$RepoRoot = Split-Path -Parent (Split-Path -Parent $PSCommandPath)
+$LockFile = Join-Path $RepoRoot 'requirements.lock.txt'
+$ConstraintsFile = Join-Path $RepoRoot 'torch-constraints.txt'
+
 function Get-Head([string]$Repo) {
     $value = & git -C $Repo rev-parse HEAD 2>$null
     if ($LASTEXITCODE -ne 0) { return $null }
@@ -88,22 +94,23 @@ $Python = Join-Path $Venv 'Scripts\python.exe'
 
 # 4) Prefer the lock file that was verified against this environment. Only
 #    -Relock re-resolves from requirements.txt, and that is an explicit action.
-$verifiedLock = Join-Path $Root 'requirements.lock.txt'
-$lock = Join-Path $Root 'requirements.lock.txt'
-
-if ($Relock -or -not (Test-Path $verifiedLock)) {
+if ($Relock) {
+    if (-not (Test-Path $ConstraintsFile)) {
+        throw "Cannot relock: constraint file is missing: $ConstraintsFile"
+    }
     uv pip install --python $Python @TorchSpec --index-url $TorchIndex
     if ($LASTEXITCODE -ne 0) { throw 'CUDA PyTorch installation failed' }
-    $constraints = Join-Path $Root 'torch-constraints.txt'
-    ($TorchSpec -join "`n") | Out-File -Encoding utf8 $constraints
     uv pip compile (Join-Path $Comfy 'requirements.txt') --python $Python `
-        --constraint $constraints --extra-index-url $TorchIndex --output-file $lock
+        --constraint $ConstraintsFile --extra-index-url $TorchIndex --output-file $LockFile
     if ($LASTEXITCODE -ne 0) { throw 'Resolving a pinned lock file failed' }
 } else {
-    Write-Output "Using verified lock file: $verifiedLock"
+    if (-not (Test-Path $LockFile)) {
+        throw "Verified lock file is missing: $LockFile. Refusing to resolve dependencies implicitly; pass -Relock to create it."
+    }
+    Write-Output "Using verified lock file: $LockFile"
 }
 
-uv pip sync --python $Python $lock --extra-index-url $TorchIndex
+uv pip sync --python $Python $LockFile --extra-index-url $TorchIndex
 if ($LASTEXITCODE -ne 0) { throw 'Applying the lock file failed' }
 
 # 5) Fail loudly if the CUDA build was replaced by a dependency resolution.

@@ -76,7 +76,15 @@
           "nb_frames": 124,
           "duration_seconds": 5.167
         }
-      }
+      },
+      "input_images": [
+        {
+          "name": "h3_first.png",
+          "exists": true,
+          "size_bytes": 1656,
+          "sha256": "eaa7e9a818fcb0d60b358e8338415eaafab5091bd612b39a830e0b74ccb387a8"
+        }
+      ]
     },
     {
       "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_flf_00001_.mp4",
@@ -115,7 +123,21 @@
           "nb_frames": 124,
           "duration_seconds": 5.167
         }
-      }
+      },
+      "input_images": [
+        {
+          "name": "h3_first.png",
+          "exists": true,
+          "size_bytes": 1656,
+          "sha256": "eaa7e9a818fcb0d60b358e8338415eaafab5091bd612b39a830e0b74ccb387a8"
+        },
+        {
+          "name": "h3b_last.png",
+          "exists": true,
+          "size_bytes": 2525,
+          "sha256": "4694187025783d6995af5c3094bc351cf2f810fd1a3ff9013216ff0e4d4be3cc"
+        }
+      ]
     },
     {
       "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_t2v_repeat_00001_.mp4",
@@ -155,7 +177,317 @@
           "duration_seconds": 5.167
         }
       }
+    },
+    {
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref2va_single_00001_.mp4",
+      "sha256": "f32bc5c8a6222b70bab941551753dad79ad3d1d4f099a58fe69467a6ca6c32bb",
+      "probe": {
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration_seconds": 5.167,
+        "size_bytes": 719282,
+        "streams": [
+          {
+            "type": "video",
+            "codec": "h264",
+            "width": 736,
+            "height": 416,
+            "fps": "24",
+            "fps_float": 24.0,
+            "nb_frames": 124,
+            "duration_seconds": 5.167
+          },
+          {
+            "type": "audio",
+            "codec": "aac",
+            "sample_rate": 32000,
+            "channels": 2,
+            "duration_seconds": 5.167
+          }
+        ],
+        "has_audio": true,
+        "video": {
+          "type": "video",
+          "codec": "h264",
+          "width": 736,
+          "height": 416,
+          "fps": "24",
+          "fps_float": 24.0,
+          "nb_frames": 124,
+          "duration_seconds": 5.167
+        }
+      },
+      "input_images": [
+        {
+          "name": "h3_first.png",
+          "exists": true,
+          "size_bytes": 1656,
+          "sha256": "eaa7e9a818fcb0d60b358e8338415eaafab5091bd612b39a830e0b74ccb387a8"
+        }
+      ]
+    },
+    {
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref2va_dual_00001_.mp4",
+      "sha256": "f6353057a4699f975bc570cebaf63658d5fa26862ffb5d992be4fe148d1e3ec1",
+      "probe": {
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration_seconds": 5.167,
+        "size_bytes": 270221,
+        "streams": [
+          {
+            "type": "video",
+            "codec": "h264",
+            "width": 736,
+            "height": 416,
+            "fps": "24",
+            "fps_float": 24.0,
+            "nb_frames": 124,
+            "duration_seconds": 5.167
+          },
+          {
+            "type": "audio",
+            "codec": "aac",
+            "sample_rate": 32000,
+            "channels": 2,
+            "duration_seconds": 5.167
+          }
+        ],
+        "has_audio": true,
+        "video": {
+          "type": "video",
+          "codec": "h264",
+          "width": 736,
+          "height": 416,
+          "fps": "24",
+          "fps_float": 24.0,
+          "nb_frames": 124,
+          "duration_seconds": 5.167
+        }
+      },
+      "input_images": [
+        {
+          "name": "h3_first.png",
+          "exists": true,
+          "size_bytes": 1656,
+          "sha256": "eaa7e9a818fcb0d60b358e8338415eaafab5091bd612b39a830e0b74ccb387a8"
+        },
+        {
+          "name": "h3b_last.png",
+          "exists": true,
+          "size_bytes": 2525,
+          "sha256": "4694187025783d6995af5c3094bc351cf2f810fd1a3ff9013216ff0e4d4be3cc"
+        }
+      ]
+    },
+    {
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_t2v_00002_.mp4",
+      "sha256": "f7c75e90cc1851c65f86e6285060a050518e7ac50a6c68e3ec6953cb15a43623",
+      "probe": {
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration_seconds": 5.167,
+        "size_bytes": 305754,
+        "streams": [
+          {
+            "type": "video",
+            "codec": "h264",
+            "width": 736,
+            "height": 416,
+            "fps": "24",
+            "fps_float": 24.0,
+            "nb_frames": 124,
+            "duration_seconds": 5.167
+          },
+          {
+            "type": "audio",
+            "codec": "aac",
+            "sample_rate": 32000,
+            "channels": 2,
+            "duration_seconds": 5.167
+          }
+        ],
+        "has_audio": true,
+        "video": {
+          "type": "video",
+          "codec": "h264",
+          "width": 736,
+          "height": 416,
+          "fps": "24",
+          "fps_float": 24.0,
+          "nb_frames": 124,
+          "duration_seconds": 5.167
+        }
+      },
+      "input_images": []
+    },
+    {
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref_audio_control_00001_.mp4",
+      "sha256": "ba176905a57a6c14b445c81f41c1e74983901b67de6aaa444a4a183bb13edcb9",
+      "probe": {
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration_seconds": 5.167,
+        "size_bytes": 1206807,
+        "streams": [
+          {
+            "type": "video",
+            "codec": "h264",
+            "width": 736,
+            "height": 416,
+            "fps": "24",
+            "fps_float": 24.0,
+            "nb_frames": 124,
+            "duration_seconds": 5.167
+          },
+          {
+            "type": "audio",
+            "codec": "aac",
+            "sample_rate": 32000,
+            "channels": 2,
+            "duration_seconds": 5.167
+          }
+        ],
+        "has_audio": true,
+        "video": {
+          "type": "video",
+          "codec": "h264",
+          "width": 736,
+          "height": 416,
+          "fps": "24",
+          "fps_float": 24.0,
+          "nb_frames": 124,
+          "duration_seconds": 5.167
+        }
+      },
+      "input_images": [
+        {
+          "name": "h3_first.png",
+          "exists": true,
+          "size_bytes": 1656,
+          "sha256": "eaa7e9a818fcb0d60b358e8338415eaafab5091bd612b39a830e0b74ccb387a8"
+        }
+      ]
+    },
+    {
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref_audio_test_00001_.mp4",
+      "sha256": "f4956c05f587b918919ff17780c39b767e3918d79b935fd1763ab40672f5b28e",
+      "probe": {
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration_seconds": 5.167,
+        "size_bytes": 1251874,
+        "streams": [
+          {
+            "type": "video",
+            "codec": "h264",
+            "width": 736,
+            "height": 416,
+            "fps": "24",
+            "fps_float": 24.0,
+            "nb_frames": 124,
+            "duration_seconds": 5.167
+          },
+          {
+            "type": "audio",
+            "codec": "aac",
+            "sample_rate": 32000,
+            "channels": 2,
+            "duration_seconds": 5.167
+          }
+        ],
+        "has_audio": true,
+        "video": {
+          "type": "video",
+          "codec": "h264",
+          "width": 736,
+          "height": 416,
+          "fps": "24",
+          "fps_float": 24.0,
+          "nb_frames": 124,
+          "duration_seconds": 5.167
+        }
+      },
+      "input_images": [
+        {
+          "name": "h3_first.png",
+          "exists": true,
+          "size_bytes": 1656,
+          "sha256": "eaa7e9a818fcb0d60b358e8338415eaafab5091bd612b39a830e0b74ccb387a8"
+        },
+        {
+          "name": "h3_ref_tone.wav",
+          "exists": true,
+          "size_bytes": 192044,
+          "sha256": "e1a4cc0766225a05288c96e08feb530b82002984de8f03be2344a9e253f91d89"
+        }
+      ]
     }
   ],
-  "workflows": []
+  "workflows": [
+    {
+      "path": "d:\\Minimax H3\\workflows\\ref2va_single_ref_api.json",
+      "exists": true,
+      "size_bytes": 2600,
+      "sha256_bytes": "0a220bd975b38190bdc7a9088e0d01e15f613768e338dcd5a872a2ef9b277485",
+      "sha256_normalized": "0029f79d3a6f87d0395f8134916d2209d09479121049190bb3dbc000846e8490"
+    },
+    {
+      "path": "d:\\Minimax H3\\workflows\\ref2va_dual_ref_api.json",
+      "exists": true,
+      "size_bytes": 2979,
+      "sha256_bytes": "18972e534df48f08c6534088bebd866fff98eab52170de36a730d234d9af8126",
+      "sha256_normalized": "7926c5f0b8065a7ed9eedfc3fb57f13650b56d5a9d0309fb00b20fac92b6fec7"
+    },
+    {
+      "path": "d:\\Minimax H3\\workflows\\baseline_t2v_api.json",
+      "exists": true,
+      "size_bytes": 2380,
+      "sha256_bytes": "0a26dc51d6be97eabf12049ecc9e3dc51f6497daf069a126c4239eed6665f1aa",
+      "sha256_normalized": "f8aefa57f384fa0d02fc5ef55cea3d95beb761eef55c07643a7c4fca85f030f3"
+    },
+    {
+      "path": "d:\\Minimax H3\\workflows\\ui_t2v_controlled.json",
+      "exists": true,
+      "size_bytes": 11082,
+      "sha256_bytes": "f9b1d95d988a2c1cf0ce91090b5ff8311dfd785f2f6cb45e2f2179cb2c2b17df",
+      "sha256_normalized": "536370c5d70a0b5e2c74c820e1be056bf4a5e101e98ae592a469de6af6e8ab43"
+    },
+    {
+      "path": "d:\\Minimax H3\\workflows\\ui_ref2va_single_controlled.json",
+      "exists": true,
+      "size_bytes": 12117,
+      "sha256_bytes": "77ee4beccac65bbd6cf144e9faea80ef28be2fa66ddf7bc0054e267c9348d10b",
+      "sha256_normalized": "e5f42347c346cfcd06ba193b89d42520047cb7f9799fc9c14530c22bfe7a1233"
+    },
+    {
+      "path": "d:\\Minimax H3\\workflows\\ref_audio_control_api.json",
+      "exists": true,
+      "size_bytes": 2554,
+      "sha256_bytes": "4cfb223fa0fb598782b7fc344ebb3d61780aa2dd6e884b9d9b9b1b0f9c9e1f0e",
+      "sha256_normalized": "d382e88fdb1d5a0878d7b2193578bcc12150f05cf6b2baae153fec710d1ba2c6"
+    },
+    {
+      "path": "d:\\Minimax H3\\workflows\\ref_audio_test_api.json",
+      "exists": true,
+      "size_bytes": 2704,
+      "sha256_bytes": "fb78a0812a7da2b265040959679af87f1e4bff4341f2d157f22f126bd926d068",
+      "sha256_normalized": "0b6d15a520e95da22b4e1422ced746a0fe14daa6720df40e50d6cbfa1c725f95"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "h3_first.png",
+      "exists": true,
+      "size_bytes": 1656,
+      "sha256": "eaa7e9a818fcb0d60b358e8338415eaafab5091bd612b39a830e0b74ccb387a8"
+    },
+    {
+      "name": "h3b_last.png",
+      "exists": true,
+      "size_bytes": 2525,
+      "sha256": "4694187025783d6995af5c3094bc351cf2f810fd1a3ff9013216ff0e4d4be3cc"
+    },
+    {
+      "name": "h3_ref_tone.wav",
+      "exists": true,
+      "size_bytes": 192044,
+      "sha256": "e1a4cc0766225a05288c96e08feb530b82002984de8f03be2344a9e253f91d89"
+    }
+  ]
 }

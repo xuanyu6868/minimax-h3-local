@@ -1,0 +1,24 @@
+{
+  "label": "audio_test",
+  "workflow": "d:\\Minimax H3\\workflows\\ref_audio_test_api.json",
+  "workflow_sha256": "fb78a0812a7da2b265040959679af87f1e4bff4341f2d157f22f126bd926d068",
+  "submitted_at": "2026-10-29T22:27:42.217166+00:00",
+  "prompt_id": "338f3256-12a1-4893-a1c0-a6ab1ec85ca8",
+  "result": "success",
+  "completed": true,
+  "status_str": "success",
+  "elapsed_seconds": 145.23,
+  "artifacts": [
+    {
+      "node_id": "14",
+      "filename": "ref_audio_test_00001_.mp4",
+      "subfolder": "h3",
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref_audio_test_00001_.mp4",
+      "exists": true,
+      "size_bytes": 1251874,
+      "sha256": "f4956c05f587b918919ff17780c39b767e3918d79b935fd1763ab40672f5b28e"
+    }
+  ],
+  "task_completed": true,
+  "video_present": true
+}

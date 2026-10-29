@@ -83,9 +83,26 @@
 - [x] 核实原生 `MiniMaxH3ReferenceToVideo` schema 与 Autogrow 输入键名
 - [x] 单参考图 736×416 / 124 帧 / 20 步 / 24fps 通过（160.72 s）
 - [x] 双参考图同规格通过（170.23 s），提示词显式区分 `<Picture 1>` / `<Picture 2>`
-- [ ] 参考视频与参考音频（未测）
+- [ ] 参考视频（未测；参考音频已在第四阶段 B 补测）
 - [ ] 画面与听感人工确认（未观看、未试听）
 - 报告：[reports/phase-4-ref2va-images.md](reports/phase-4-ref2va-images.md)
+
+## 第四阶段 B：内存稳定性、界面交付与参考音频（2026-10-30）
+
+- [x] install-runtime.ps1 锁文件改为按脚本位置解析，缺锁文件报错，仅 `-Relock` 重新解析
+- [x] start-comfyui.ps1 启动前检查 8188，取监听进程为真实 PID，`-StopExisting` 才替换
+- [x] launch JSON 不再把"未加载"预填成"已卸载"结论
+- [x] 采样新增 `commit_headroom_MiB` / `commit_ratio`，汇总新增极值时间与中断规则判定
+- [x] 修正报告口径：双图显存平均值高 298 MiB、峰值低 55 MiB，不能混写
+- [x] 补齐 9 条视频媒体探测、7 个工作流哈希（含规范化哈希）、3 项输入哈希
+- [x] 内存预设对比：默认 vs `--disable-pinned-memory`，提交峰值 49,345 → 38,245 MiB，破阈 29 → 0
+- [x] UI 工作流生成器 + 本机实际导入（T2V 14 节点、Ref2VA 15 节点）
+- [x] T2V 经界面提交成功（`3be89230`）
+- [ ] **Ref2VA 经界面提交失败**：`ref_image_1` 扁平键报 `TypeError`，未改 ComfyUI 源码
+- [x] 参考音频对照 + 实验：124 帧全不同、音频 RMS 0.0019 → 0.1998
+- [ ] 参考视频通路、`ref_image_size=max`、多音频未测
+- [ ] 中断流程未实际触发验证；每档预设仅 1 次，非统计结论
+- 报告：[reports/phase-4b-stability-ui-audio.md](reports/phase-4b-stability-ui-audio.md)
 
 ## 第五阶段：优化与备选（未开始）
 
