@@ -1,0 +1,17 @@
+{
+  "committed_bytes": 25052213248,
+  "commit_limit_bytes": 43117363200,
+  "physical_total_bytes": 33453686784,
+  "automatic_managed": true,
+  "pagefile_usage": [
+    {
+      "Name": "C:\\pagefile.sys",
+      "AllocatedBaseSize": 9216,
+      "CurrentUsage": 850,
+      "PeakUsage": 1563
+    }
+  ],
+  "pagefile_setting": [],
+  "captured_at_utc": "2026-10-29T21:19:07.798922+00:00",
+  "source": "CIM: Win32_PerfRawData_PerfOS_Memory, Win32_ComputerSystem, Win32_PageFileUsage, Win32_PageFileSetting"
+}

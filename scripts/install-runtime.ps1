@@ -1,7 +1,8 @@
 param(
     [string]$Root = 'D:\AI\MiniMaxH3',
     [string]$ComfyCommit = '63be2f9b82ad0dac88a7ceaa28a9cf3154125a18',
-    [switch]$PlanOnly
+    [switch]$PlanOnly,
+    [switch]$Relock
 )
 $ErrorActionPreference = 'Stop'
 $Comfy = Join-Path $Root 'ComfyUI'
@@ -85,20 +86,25 @@ if ($PlanOnly) {
 
 $Python = Join-Path $Venv 'Scripts\python.exe'
 
-# 4) Install the CUDA wheels, then build a lock file that pins them. Constraints
-#    prevent requirements.txt from silently swapping in a default PyPI torch.
-uv pip install --python $Python @TorchSpec --index-url $TorchIndex
-if ($LASTEXITCODE -ne 0) { throw 'CUDA PyTorch installation failed' }
-
-$constraints = Join-Path $Root 'torch-constraints.txt'
-($TorchSpec -join "`n") | Out-File -Encoding utf8 $constraints
+# 4) Prefer the lock file that was verified against this environment. Only
+#    -Relock re-resolves from requirements.txt, and that is an explicit action.
+$verifiedLock = Join-Path $Root 'requirements.lock.txt'
 $lock = Join-Path $Root 'requirements.lock.txt'
-uv pip compile (Join-Path $Comfy 'requirements.txt') --python $Python `
-    --constraint $constraints --extra-index-url $TorchIndex --output-file $lock
-if ($LASTEXITCODE -ne 0) { throw 'Resolving a pinned lock file failed' }
+
+if ($Relock -or -not (Test-Path $verifiedLock)) {
+    uv pip install --python $Python @TorchSpec --index-url $TorchIndex
+    if ($LASTEXITCODE -ne 0) { throw 'CUDA PyTorch installation failed' }
+    $constraints = Join-Path $Root 'torch-constraints.txt'
+    ($TorchSpec -join "`n") | Out-File -Encoding utf8 $constraints
+    uv pip compile (Join-Path $Comfy 'requirements.txt') --python $Python `
+        --constraint $constraints --extra-index-url $TorchIndex --output-file $lock
+    if ($LASTEXITCODE -ne 0) { throw 'Resolving a pinned lock file failed' }
+} else {
+    Write-Output "Using verified lock file: $verifiedLock"
+}
 
 uv pip sync --python $Python $lock --extra-index-url $TorchIndex
-if ($LASTEXITCODE -ne 0) { throw 'Applying the pinned lock file failed' }
+if ($LASTEXITCODE -ne 0) { throw 'Applying the lock file failed' }
 
 # 5) Fail loudly if the CUDA build was replaced by a dependency resolution.
 & $Python -c "import torch; assert torch.cuda.is_available(), 'CUDA build was replaced'; print(torch.__version__, torch.version.cuda)"

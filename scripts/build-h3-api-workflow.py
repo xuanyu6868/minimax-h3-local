@@ -3,7 +3,8 @@ import json
 from pathlib import Path
 
 
-def build(width, height, length, steps, prefix, unet, prompt, first_frame=None, last_frame=None):
+def build(width, height, length, steps, prefix, unet, prompt, first_frame=None, last_frame=None,
+          ref_images=None, ref_image_size='match'):
     api = {
         '1': {'class_type': 'UNETLoader',
               'inputs': {'unet_name': unet, 'weight_dtype': 'default'}},
@@ -14,13 +15,27 @@ def build(width, height, length, steps, prefix, unet, prompt, first_frame=None, 
               'inputs': {'vae_name': 'minimax_h3_video_vae_int8_convrot.safetensors'}},
         '4': {'class_type': 'VAELoader',
               'inputs': {'vae_name': 'minimax_h3_audio_vae_fp32.safetensors'}},
-        '5': {'class_type': 'MiniMaxH3ImageToVideo',
-              'inputs': {'clip': ['2', 0], 'vae': ['3', 0], 'prompt': prompt,
-                         'width': width, 'height': height, 'length': length}},
         '6': {'class_type': 'RandomNoise', 'inputs': {'noise_seed': 12345}},
         '7': {'class_type': 'KSamplerSelect', 'inputs': {'sampler_name': 'res_multistep'}},
         '8': {'class_type': 'BasicScheduler',
               'inputs': {'model': ['1', 0], 'scheduler': 'simple', 'steps': steps, 'denoise': 1.0}},
+    }
+    if ref_images:
+        # Ref2VA conditioning: reference images ride through every sampling step,
+        # and the prompt addresses them as <Picture 1>, <Picture 2>, ...
+        api['5'] = {'class_type': 'MiniMaxH3ReferenceToVideo',
+                    'inputs': {'clip': ['2', 0], 'vae': ['3', 0], 'audio_vae': ['4', 0],
+                               'prompt': prompt, 'width': width, 'height': height,
+                               'length': length, 'ref_image_size': ref_image_size}}
+        for index, ref in enumerate(ref_images, start=1):
+            node_id = str(20 + index)
+            api[node_id] = {'class_type': 'LoadImage', 'inputs': {'image': ref}}
+            api['5']['inputs'][f'ref_images.ref_image_{index}'] = [node_id, 0]
+    else:
+        api['5'] = {'class_type': 'MiniMaxH3ImageToVideo',
+                    'inputs': {'clip': ['2', 0], 'vae': ['3', 0], 'prompt': prompt,
+                               'width': width, 'height': height, 'length': length}}
+    api.update({
         '9': {'class_type': 'BasicGuider',
               'inputs': {'model': ['1', 0], 'conditioning': ['5', 0]}},
         '10': {'class_type': 'SamplerCustomAdvanced',
@@ -35,7 +50,7 @@ def build(width, height, length, steps, prefix, unet, prompt, first_frame=None, 
         '14': {'class_type': 'SaveVideo',
                'inputs': {'video': ['13', 0], 'filename_prefix': prefix,
                           'format': 'auto', 'codec': 'auto'}},
-    }
+    })
     if first_frame:
         api['5']['inputs']['first_frame'] = ['15', 0]
         api['15'] = {'class_type': 'LoadImage', 'inputs': {'image': first_frame}}
@@ -57,10 +72,16 @@ if __name__ == '__main__':
     parser.add_argument('--prompt', default='A red ball rolling slowly on a wooden table, soft daylight.')
     parser.add_argument('--first-frame')
     parser.add_argument('--last-frame')
+    parser.add_argument('--ref-image', action='append', default=None,
+                        help='Reference image filename under ComfyUI/input; repeat for <Picture 2>, ...')
+    parser.add_argument('--ref-image-size', choices=('match', 'max'), default='match')
     args = parser.parse_args()
     data = build(args.width, args.height, args.length, args.steps, args.prefix,
-                 args.unet, args.prompt, args.first_frame, args.last_frame)
+                 args.unet, args.prompt, args.first_frame, args.last_frame,
+                 args.ref_image, args.ref_image_size)
     args.output.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding='utf-8')
     print(json.dumps({'output': str(args.output), 'nodes': len(data),
                       'width': args.width, 'height': args.height,
-                      'length': args.length, 'steps': args.steps}))
+                      'length': args.length, 'steps': args.steps,
+                      'unet': args.unet, 'ref_images': args.ref_image or [],
+                      'ref_image_size': args.ref_image_size if args.ref_image else None}))

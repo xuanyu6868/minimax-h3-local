@@ -51,6 +51,7 @@ def test_patch_uses_bare_loader_name_and_pinned_url():
     model = node['properties']['models'][0]
     assert model['name'] == 'minimax_h3_fl2va_pruned_w6a8.safetensors'
     assert '/diffusion_models/' in model['url']
+    assert model['url'].endswith('/diffusion_models/minimax_h3_fl2va_pruned_w6a8.safetensors')
     assert patch_module.REVISION in model['url']
     assert '/resolve/main/' not in model['url']
     assert patch_module.verify(workflow) == []
@@ -91,6 +92,9 @@ def test_install_script_checks_out_before_verifying():
     assert checkout_pos < verify_pos
     assert '--no-deps' not in text, 'dependency installation must not rely on --no-deps'
     assert 'requirements.lock.txt' in text
+    # A re-resolve must be an explicit, opt-in action, not the default path.
+    assert '$Relock' in text
+    assert text.index('$Relock -or -not (Test-Path $verifiedLock)') > 0
 
 
 def test_install_script_refuses_dirty_existing_checkout():
@@ -101,6 +105,52 @@ def test_install_script_refuses_dirty_existing_checkout():
 
 def _history_case(status):
     return {'p1': {'status': status, 'outputs': {}}}
+
+
+def test_patch_rewrites_url_file_name_to_w6a8():
+    """A loader renamed to W6A8 must not keep an INT8 URL (review finding)."""
+    workflow = {
+        'nodes': [{
+            'id': 9,
+            'type': 'UNETLoader',
+            'widgets_values': ['minimax_h3_fl2va_pruned_int8_convrot.safetensors', 'default'],
+            'widgets_values_named': {'unet_name': 'minimax_h3_fl2va_pruned_int8_convrot.safetensors'},
+            'properties': {'models': [{
+                'name': 'minimax_h3_fl2va_pruned_int8_convrot.safetensors',
+                'url': 'https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors',
+                'directory': 'diffusion_models',
+            }]},
+        }],
+    }
+    changed = []
+    patch_module.patch(workflow, changed)
+    model = workflow['nodes'][0]['properties']['models'][0]
+    assert model['name'] == patch_module.LOADER_NAME
+    assert model['url'].endswith('/diffusion_models/minimax_h3_fl2va_pruned_w6a8.safetensors')
+    assert 'int8_convrot' not in model['url']
+    assert patch_module.REVISION in model['url']
+    assert model['directory'] == 'diffusion_models'
+    assert patch_module.verify(workflow) == []
+
+
+def test_verify_detects_name_url_mismatch():
+    bad = {'nodes': [{
+        'type': 'UNETLoader',
+        'widgets_values': ['minimax_h3_fl2va_pruned_w6a8.safetensors'],
+        'properties': {'models': [{
+            'name': 'minimax_h3_fl2va_pruned_w6a8.safetensors',
+            'url': 'https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors',
+            'directory': 'diffusion_models',
+        }]},
+    }]}
+    problems = patch_module.verify(bad)
+    assert any('mismatch' in p or 'INT8' in p for p in problems), problems
+
+
+def test_committed_workflows_are_consistent():
+    for name in ('video_minimax_h3_t2v_w6a8.json', 'video_minimax_h3_i2v_w6a8.json'):
+        data = json.loads((ROOT / 'workflows' / name).read_text(encoding='utf-8'))
+        assert patch_module.verify(data) == [], name
 
 
 def test_run_workflow_rejects_incomplete_then_accepts_success():

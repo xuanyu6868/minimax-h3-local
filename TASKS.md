@@ -57,19 +57,35 @@
 - [x] 修正 patch-workflow-w6a8.py 加载器名与 URL 路径分离，并固定全部模型 URL 修订
 - [x] 重写 run-workflow.py 完成判定、失败/超时退出码、产物校验与证据记录
 - [x] 8 项回归检查全部通过
-- [x] 界面工作流实际导入验证：模型可选、子图完整、无缺失节点
+- [x] `/object_info` 服务端节点与选项兼容性检查（不等同于前端界面导入验证）
 - [x] 正式基线：T2V / I2V / 首尾帧 736×416、124 帧、20 步、24fps 全部通过
 - [x] T2V 同规格复跑通过（130.20 s）
 - [x] 2 秒间隔资源采样与媒体规格核查
+- [x] 采样数据按生成窗口重算，修正峰值来源
 - [ ] 画质与听感人工确认（未观看画面、未试听音轨）
 - 报告：[reports/phase-3b-review-fixes-baseline.md](reports/phase-3b-review-fixes-baseline.md)
 
-## 第四阶段：Ref2VA 验收（未开始）
+## 第三阶段最终补正（2026-10-30）
 
-- [ ] 下载并校验 Ref2VA
-- [ ] 验证多参考图
-- [ ] 验证参考视频和音频
-- [ ] 评估可选 Easy 节点统一界面
+- [x] patch-workflow-w6a8.py 强制 W6A8 规范路径：加载器名、URL 文件名、目录、修订四处一致
+- [x] 新增 3 项回归检查覆盖"URL 为 main 但文件名不同"的漏改情形（共 11 项通过）
+- [x] `requirements.lock.txt` 入库，`uv pip install --dry-run -r requirements.lock.txt` 返回 Would make no changes
+- [x] install-runtime.ps1 默认使用已验证锁文件，重新解析需显式 `-Relock`
+- [x] 报告第 3 节改名并明确 `/object_info` 检查边界
+- [x] 报告第 7 节按时间窗口重写：生成期 GPU 峰值 11,404 MiB，可用内存最低 2,007 MiB
+- [x] 补提完整 337 行采样 CSV
+- [x] 新增 `committed_MiB` / `commit_limit_MiB` 两列，只读记录页面文件配置
+
+## 第四阶段：Ref2VA 受控验收（2026-10-30）
+
+- [x] 下载并校验 Ref2VA（15,983,746,636 bytes，SHA256 `ece96bb…` 通过）
+- [x] 确认 FL2VA 与 Ref2VA 不同时驻留：切换模型集需重启进程，启动参数已记录
+- [x] 核实原生 `MiniMaxH3ReferenceToVideo` schema 与 Autogrow 输入键名
+- [x] 单参考图 736×416 / 124 帧 / 20 步 / 24fps 通过（160.72 s）
+- [x] 双参考图同规格通过（170.23 s），提示词显式区分 `<Picture 1>` / `<Picture 2>`
+- [ ] 参考视频与参考音频（未测）
+- [ ] 画面与听感人工确认（未观看、未试听）
+- 报告：[reports/phase-4-ref2va-images.md](reports/phase-4-ref2va-images.md)
 
 ## 第五阶段：优化与备选（未开始）
 

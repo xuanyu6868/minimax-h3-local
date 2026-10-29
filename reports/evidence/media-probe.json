@@ -1,0 +1,161 @@
+{
+  "videos": [
+    {
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_t2v_00001_.mp4",
+      "sha256": "e4fcc9bd8ee425700aa7ad1e025d45781151f13410d97bd776ce352c4299fecf",
+      "probe": {
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration_seconds": 5.167,
+        "size_bytes": 304926,
+        "streams": [
+          {
+            "type": "video",
+            "codec": "h264",
+            "width": 736,
+            "height": 416,
+            "fps": "24",
+            "fps_float": 24.0,
+            "nb_frames": 124,
+            "duration_seconds": 5.167
+          },
+          {
+            "type": "audio",
+            "codec": "aac",
+            "sample_rate": 32000,
+            "channels": 2,
+            "duration_seconds": 5.167
+          }
+        ],
+        "has_audio": true,
+        "video": {
+          "type": "video",
+          "codec": "h264",
+          "width": 736,
+          "height": 416,
+          "fps": "24",
+          "fps_float": 24.0,
+          "nb_frames": 124,
+          "duration_seconds": 5.167
+        }
+      }
+    },
+    {
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_i2v_00001_.mp4",
+      "sha256": "9dd7669ea26d44bc3e8cadc727495dde19eaeaa2da1a06de13aec2c2365aec0a",
+      "probe": {
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration_seconds": 5.167,
+        "size_bytes": 372029,
+        "streams": [
+          {
+            "type": "video",
+            "codec": "h264",
+            "width": 736,
+            "height": 416,
+            "fps": "24",
+            "fps_float": 24.0,
+            "nb_frames": 124,
+            "duration_seconds": 5.167
+          },
+          {
+            "type": "audio",
+            "codec": "aac",
+            "sample_rate": 32000,
+            "channels": 2,
+            "duration_seconds": 5.167
+          }
+        ],
+        "has_audio": true,
+        "video": {
+          "type": "video",
+          "codec": "h264",
+          "width": 736,
+          "height": 416,
+          "fps": "24",
+          "fps_float": 24.0,
+          "nb_frames": 124,
+          "duration_seconds": 5.167
+        }
+      }
+    },
+    {
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_flf_00001_.mp4",
+      "sha256": "a105053054c20a517583cc33b1c4fbd879089ba99a7bfd03910079fd014629f0",
+      "probe": {
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration_seconds": 5.167,
+        "size_bytes": 428198,
+        "streams": [
+          {
+            "type": "video",
+            "codec": "h264",
+            "width": 736,
+            "height": 416,
+            "fps": "24",
+            "fps_float": 24.0,
+            "nb_frames": 124,
+            "duration_seconds": 5.167
+          },
+          {
+            "type": "audio",
+            "codec": "aac",
+            "sample_rate": 32000,
+            "channels": 2,
+            "duration_seconds": 5.167
+          }
+        ],
+        "has_audio": true,
+        "video": {
+          "type": "video",
+          "codec": "h264",
+          "width": 736,
+          "height": 416,
+          "fps": "24",
+          "fps_float": 24.0,
+          "nb_frames": 124,
+          "duration_seconds": 5.167
+        }
+      }
+    },
+    {
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_t2v_repeat_00001_.mp4",
+      "sha256": "a6e4cf7053e327fc76c74377d166d915c03ccb2915f39d2862b0b7a2b31d14e3",
+      "probe": {
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "duration_seconds": 5.167,
+        "size_bytes": 304933,
+        "streams": [
+          {
+            "type": "video",
+            "codec": "h264",
+            "width": 736,
+            "height": 416,
+            "fps": "24",
+            "fps_float": 24.0,
+            "nb_frames": 124,
+            "duration_seconds": 5.167
+          },
+          {
+            "type": "audio",
+            "codec": "aac",
+            "sample_rate": 32000,
+            "channels": 2,
+            "duration_seconds": 5.167
+          }
+        ],
+        "has_audio": true,
+        "video": {
+          "type": "video",
+          "codec": "h264",
+          "width": 736,
+          "height": 416,
+          "fps": "24",
+          "fps_float": 24.0,
+          "nb_frames": 124,
+          "duration_seconds": 5.167
+        }
+      }
+    }
+  ],
+  "workflows": []
+}

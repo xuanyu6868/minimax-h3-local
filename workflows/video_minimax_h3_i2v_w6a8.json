@@ -1188,7 +1188,7 @@
               "models": [
                 {
                   "name": "minimax_h3_fl2va_pruned_w6a8.safetensors",
-                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/diffusion_models/minimax_h3_fl2va_pruned_w6a8.safetensors",
                   "directory": "diffusion_models"
                 }
               ]

@@ -31,6 +31,15 @@
 19. **“任务完成”不等于“视频验收通过”。** 成功任务必须定位到真实产物并记录大小与 SHA256，否则单独标记。
 20. **性能数字必须来自定时采样并注明间隔。** 2 秒采样的统计值不表述为硬件精确峰值；复跑更快视为缓存差异，不作为加速结论。
 
+## 第四阶段新增（2026-10-30）
+
+21. **安装默认使用已验证的锁文件。** `install-runtime.ps1` 默认 `uv pip sync` 已入库的 `requirements.lock.txt`；只有显式 `-Relock` 才重新解析。这样"重装"与"已验证环境"是同一组版本。
+22. **`/object_info` 检查只证明服务端兼容。** 它不证明前端完成界面导入、子图展开或连线可运行。没有真实证据时不写"界面导入通过"。
+23. **FL2VA 与 Ref2VA 不同时加载。** ComfyUI 会缓存已加载 checkpoint 直到进程退出，所以切换模型集必须重启进程，并用 `-ModelSet` 记录启动参数到 `launch-args.json`。
+24. **Autogrow 输入在 API 格式中用带组前缀的键名。** 参考图写作 `ref_images.ref_image_1`、`ref_images.ref_image_2`，依据 `_io.py` 的 `finalize_prefix` / `build_nested_inputs`，并以服务端接受为准。
+25. **提交内存与虚拟内存口径分开记录。** `CommittedBytes`/`CommitLimit` 来自性能计数器；`TotalVirtualMemorySize - FreeVirtualMemory` 是另一口径。两者并列，不用一个替代另一个，也不据提交量推断换页量。
+26. **资源统计必须按任务时间窗口切分。** 全程极值可能落在生成前后的空闲段，不能当作生成期峰值。
+
 ## 第一阶段容量复核结论
 
 - W6A8 + NVFP4-AWQ 比官方默认 INT8 ConvRot 更适合 12GB VRAM + 32GB RAM，但采样/解码峰值可能仍造成 OOM 或换页。

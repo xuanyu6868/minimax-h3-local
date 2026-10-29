@@ -1,0 +1,24 @@
+{
+  "label": "ref2va_dual",
+  "workflow": "d:\\Minimax H3\\workflows\\ref2va_dual_ref_api.json",
+  "workflow_sha256": "18972e534df48f08c6534088bebd866fff98eab52170de36a730d234d9af8126",
+  "submitted_at": "2026-10-29T21:28:43.194252+00:00",
+  "prompt_id": "5e13e2d1-1c67-42e4-8db6-70c7c0416660",
+  "result": "success",
+  "completed": true,
+  "status_str": "success",
+  "elapsed_seconds": 170.23,
+  "artifacts": [
+    {
+      "node_id": "14",
+      "filename": "ref2va_dual_00001_.mp4",
+      "subfolder": "h3",
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref2va_dual_00001_.mp4",
+      "exists": true,
+      "size_bytes": 270221,
+      "sha256": "f6353057a4699f975bc570cebaf63658d5fa26862ffb5d992be4fe148d1e3ec1"
+    }
+  ],
+  "task_completed": true,
+  "video_present": true
+}
