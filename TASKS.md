@@ -39,12 +39,16 @@
 - [ ] 审查模板中 W6A8 替换步骤
 - [ ] 建立独立可回滚环境
 
-## 第三阶段：FL2VA 基础验收（未开始）
+## 第三阶段：FL2VA 基础验收（已完成小样）
 
-- [ ] 下载并校验 FL2VA、TE、双 VAE
-- [ ] 验证 T2V
-- [ ] 验证 I2V 和首尾帧
-- [ ] 记录峰值 VRAM/RAM 与错误日志（脱敏）
+- [x] 下载并校验 FL2VA、TE、双 VAE（35,087,209,179 bytes，SHA256 全部通过）
+- [x] 修复下载脚本 `.partial` 被截断的缺陷
+- [x] 以 API 工作流接入 W6A8，模型被 ComfyUI 正确识别
+- [x] 验证 T2V（显存峰值约 11.0 GiB，端到端 11.54 秒）
+- [x] 验证 I2V
+- [x] 验证首尾帧
+- [x] 记录峰值 VRAM/RAM：详见 [reports/phase-3-fl2va-smoke.md](reports/phase-3-fl2va-smoke.md)
+- [ ] 正式时长（≥124 帧）与画质评估（未开始）
 
 ## 第四阶段：Ref2VA 验收（未开始）
 

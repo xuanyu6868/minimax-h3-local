@@ -93,3 +93,16 @@ Memory: 726MiB / 12227MiB（审计时）
 | 模型 | 未下载，未进行加载或生成验收 |
 
 详细命令、退出码与错误修复见 [reports/phase-2a-runtime.md](reports/phase-2a-runtime.md)。
+
+## 第三阶段更新（2026-10-30）
+
+| 项目 | 结果 |
+|---|---|
+| 本地模型 | FL2VA W6A8 + NVFP4-AWQ TE + 视频/音频 VAE，合计 35,087,209,179 bytes |
+| 校验 | 四个文件字节数与 SHA256 全部匹配 |
+| 生成验证 | T2V、I2V、首尾帧均 `success`（22 帧、3 步小样） |
+| 显存峰值 | 约 11.0 GiB / 12.2 GiB |
+| ComfyUI 进程 RAM | 13.7–15.93 GiB |
+| Ref2VA | 未下载 |
+
+详见 [reports/phase-3-fl2va-smoke.md](reports/phase-3-fl2va-smoke.md)。
