@@ -20,6 +20,7 @@ SOCKETS = {
     'CLIPLoader': {'in': [], 'out': [('CLIP', 'CLIP')]},
     'VAELoader': {'in': [], 'out': [('VAE', 'VAE')]},
     'LoadImage': {'in': [], 'out': [('IMAGE', 'IMAGE'), ('MASK', 'MASK')]},
+    'LoadAudio': {'in': [], 'out': [('AUDIO', 'AUDIO')]},
     'RandomNoise': {'in': [], 'out': [('NOISE', 'NOISE')]},
     'KSamplerSelect': {'in': [], 'out': [('SAMPLER', 'SAMPLER')]},
     'BasicScheduler': {'in': [('model', 'MODEL')], 'out': [('SIGMAS', 'SIGMAS')]},
@@ -41,8 +42,32 @@ SOCKETS = {
     'SaveVideo': {'in': [('video', 'VIDEO')], 'out': []},
 }
 
-# API input key -> canvas socket name, where they differ.
-RENAME = {'ref_images.ref_image_1': 'ref_image_1', 'ref_images.ref_image_2': 'ref_image_2'}
+# Autogrow inputs must keep their group path in the canvas node. The official
+# R2V template stores them as name="ref_images.ref_image_0" with a short
+# label="ref_image_0" and shape=7, and the frontend turns that name into the
+# nested key the backend expects. Renaming them to a bare "ref_image_0" loses
+# the group path and makes the submitted prompt fail with
+# "unexpected keyword argument 'ref_image_0'".
+AUTOGROW = {
+    'ref_images.ref_image_': ('IMAGE', 'ref_images', 'ref_image_'),
+    'ref_videos.ref_video_': ('IMAGE', 'ref_videos', 'ref_video_'),
+    'ref_video_audios.ref_video_audio_': ('AUDIO', 'ref_video_audios', 'ref_video_audio_'),
+    'ref_audios.ref_audio_': ('AUDIO', 'ref_audios', 'ref_audio_'),
+}
+SHAPE_GRID = 7
+
+
+def socket_for(key):
+    """Return (name, label, type, shape) for a canvas input."""
+    for prefix, (type_name, _group, _field) in AUTOGROW.items():
+        if key.startswith(prefix):
+            return key, key.split('.', 1)[1], type_name, SHAPE_GRID
+    return key, None, None, None
+
+
+def api_key_for(key):
+    """Translate an API input key to the canvas socket name (same string)."""
+    return key
 
 
 def build(api):
@@ -74,15 +99,21 @@ def build(api):
                 if not src:
                     raise SystemExit(f'{node_id}.{key} references unknown node {source_id}:{slot}')
                 link_id += 1
-                name = RENAME.get(key, key)
-                inputs.append({'name': name, 'type': src[2], 'link': link_id})
+                name, label, autogrow_type, shape = socket_for(key)
+                entry = {'name': name}
+                if label:
+                    entry['label'] = label
+                if shape is not None:
+                    entry['shape'] = shape
+                entry['type'] = autogrow_type or src[2]
+                entry['link'] = link_id
+                inputs.append(entry)
                 links.append([link_id, int(source_id), src[1], int(node_id),
-                              len(inputs) - 1, src[2]])
-                link_inputs.append((link_id, int(source_id), src[1], len(inputs) - 1, src[2]))
+                              len(inputs) - 1, entry['type']])
+                link_inputs.append((link_id, int(source_id), src[1], len(inputs) - 1, entry['type']))
             else:
-                name = RENAME.get(key, key)
                 widgets.append(value)
-                inputs.append({'name': name, 'type': 'WIDGET', 'link': None})
+                inputs.append({'name': key, 'type': 'WIDGET', 'link': None})
 
         for out_index, (name, type_name) in enumerate(sock['out']):
             produced[f'{node_id}:{out_index}'] = (link_id, out_index, type_name)
@@ -125,6 +156,32 @@ def build(api):
     }
 
 
+def verify(ui):
+    """Fail if any Autogrow socket lost its group path.
+
+    A bare name such as 'ref_image_0' is rejected, because the frontend would
+    submit it as a flat key and the backend would refuse it.
+    """
+    groups = {group for _t, group, _f in AUTOGROW.values()}
+    bare_fields = {field + str(i)
+                   for _t, _g, field in AUTOGROW.values() for i in range(100)}
+    problems = []
+    for node in ui['nodes']:
+        for entry in node['inputs']:
+            name = entry.get('name') or ''
+            if '.' in name:
+                group, field = name.split('.', 1)
+                if group not in groups:
+                    problems.append(f"node {node['id']}: unknown group '{group}' in '{name}'")
+                if entry.get('shape') != SHAPE_GRID:
+                    problems.append(f"node {node['id']}: '{name}' missing shape={SHAPE_GRID}")
+            elif name in bare_fields:
+                problems.append(f"node {node['id']}: '{name}' lost its Autogrow group path")
+    if problems:
+        raise SystemExit('UI verification failed:\n  ' + '\n  '.join(problems))
+    return True
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--api', type=Path, required=True)
@@ -132,6 +189,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     api = json.loads(args.api.read_text(encoding='utf-8'))
     ui = build(api)
+    verify(ui)
     args.output.write_text(json.dumps(ui, ensure_ascii=False, indent=1), encoding='utf-8')
+    autogrow = [e['name'] for n in ui['nodes'] for e in n['inputs']
+                if any(e['name'].startswith(p) for p in AUTOGROW)]
     print(json.dumps({'output': str(args.output), 'nodes': len(ui['nodes']),
-                      'links': len(ui['links'])}, ensure_ascii=False))
+                      'links': len(ui['links']), 'autogrow_sockets': autogrow},
+                     ensure_ascii=False))

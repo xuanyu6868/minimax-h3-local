@@ -1,0 +1,66 @@
+{
+  "prompt_id": "replay-ratio",
+  "base_url": "http://127.0.0.1:8188",
+  "started_at": "2026-10-29T23:15:54.350253+00:00",
+  "rules": {
+    "ratio_threshold": 0.97,
+    "headroom_threshold_MiB": 512.0,
+    "consecutive_samples_for_ratio": 2
+  },
+  "dry_run": true,
+  "samples": [
+    {
+      "at": "2026-10-29T23:15:54.350253+00:00",
+      "reading": {
+        "committed_MiB": 30000,
+        "commit_limit_MiB": 41179
+      },
+      "decision": {
+        "action": "hold",
+        "reason": "within limits",
+        "streak": 0,
+        "headroom_MiB": 11179,
+        "ratio": 0.7285
+      }
+    },
+    {
+      "at": "2026-10-29T23:15:54.350253+00:00",
+      "reading": {
+        "committed_MiB": 40100,
+        "commit_limit_MiB": 41179
+      },
+      "decision": {
+        "action": "hold",
+        "reason": "within limits",
+        "streak": 1,
+        "headroom_MiB": 1079,
+        "ratio": 0.9738
+      }
+    },
+    {
+      "at": "2026-10-29T23:15:54.350253+00:00",
+      "reading": {
+        "committed_MiB": 40200,
+        "commit_limit_MiB": 41179
+      },
+      "decision": {
+        "action": "interrupt",
+        "reason": "ratio 0.9762 >= 0.97 on 2 consecutive samples",
+        "streak": 2,
+        "headroom_MiB": 979,
+        "ratio": 0.9762
+      }
+    }
+  ],
+  "source": "replay",
+  "decision": {
+    "action": "interrupt",
+    "reason": "ratio 0.9762 >= 0.97 on 2 consecutive samples",
+    "streak": 2,
+    "headroom_MiB": 979,
+    "ratio": 0.9762
+  },
+  "ended": "dry-run: would interrupt",
+  "rule_fired": true,
+  "finished_at": "2026-10-29T23:15:54.350253+00:00"
+}

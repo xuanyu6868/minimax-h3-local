@@ -1,0 +1,22 @@
+{
+  "h3_first.png": {
+    "width": 320,
+    "height": 320,
+    "format": "png",
+    "size_bytes": 1656,
+    "sha256": "eaa7e9a818fcb0d60b358e8338415eaafab5091bd612b39a830e0b74ccb387a8"
+  },
+  "h3b_last.png": {
+    "width": 736,
+    "height": 416,
+    "format": "png",
+    "size_bytes": 2525,
+    "sha256": "4694187025783d6995af5c3094bc351cf2f810fd1a3ff9013216ff0e4d4be3cc"
+  },
+  "h3_ref_tone.wav": {
+    "sample_rate": 32000,
+    "channels": 1,
+    "size_bytes": 192044,
+    "sha256": "e1a4cc0766225a05288c96e08feb530b82002984de8f03be2344a9e253f91d89"
+  }
+}

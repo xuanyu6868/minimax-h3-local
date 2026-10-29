@@ -1,6 +1,11 @@
 param(
     [ValidateSet('fl2va', 'ref2va')]
     [string]$ModelSet = 'fl2va',
+    # Pinned memory is off by default: measured on this machine it cut the commit
+    # peak from 49,345 MiB to 38,245 MiB and raised the minimum commit headroom
+    # from 420 MiB to 2,934 MiB, with byte-identical output. -EnablePinnedMemory
+    # restores the old behaviour for comparison only.
+    [switch]$EnablePinnedMemory,
     [string[]]$ExtraArgs = @(),
     [switch]$StopExisting,
     [string]$PlanDir = 'D:\AI\MiniMaxH3\launches'
@@ -19,9 +24,13 @@ if (-not (Test-Path $Python) -or (-not (Test-Path $Main))) {
 $Other = if ($ModelSet -eq 'fl2va') { 'minimax_h3_ref2va_pruned_w6a8.safetensors' } else { 'minimax_h3_fl2va_pruned_w6a8.safetensors' }
 $OtherPath = Join-Path $Root "ComfyUI\models\diffusion_models\$Other"
 
+$memoryArgs = if ($EnablePinnedMemory) { @() } else { @('--disable-pinned-memory') }
+$pinnedState = if ($EnablePinnedMemory) { 'enabled (explicit opt-out of the low-memory default)' } else { 'disabled (project default)' }
 $comfyArgs = @($Main, '--listen', '127.0.0.1', '--port', '8188',
-              '--disable-auto-launch', '--reserve-vram', '1.0') + $ExtraArgs
+              '--disable-auto-launch', '--reserve-vram', '1.0') + $memoryArgs + $ExtraArgs
 $launch = "$Python $($comfyArgs -join ' ')"
+Write-Output "Pinned memory: $pinnedState"
+Write-Output "Launch command: $launch"
 
 # Refuse to silently reuse an already-running server: its model set and flags
 # are unknown, and the measurements would not belong to this launch.
@@ -77,6 +86,7 @@ $serverProc = Get-CimInstance Win32_Process -Filter "ProcessId=$serverPid"
 $record = [ordered]@{
     captured_at_utc         = (Get-Date).ToUniversalTime().ToString('o')
     model_set               = $ModelSet
+    pinned_memory           = $pinnedState
     requested_command       = $launch
     launcher_pid            = $launcher.Id
     server_pid              = $serverPid

@@ -27,11 +27,15 @@ def build(width, height, length, steps, prefix, unet, prompt, first_frame=None, 
                     'inputs': {'clip': ['2', 0], 'vae': ['3', 0], 'audio_vae': ['4', 0],
                                'prompt': prompt, 'width': width, 'height': height,
                                'length': length, 'ref_image_size': ref_image_size}}
-        for index, ref in enumerate(ref_images, start=1):
+        # Autogrow slots are zero-based: the schema advertises names
+        # range(template.max), and the official R2V template wires
+        # ref_images.ref_image_0 first. The prompt still addresses the first
+        # image as <Picture 1>, because that numbering is the model's.
+        for index, ref in enumerate(ref_images):
             node_id = str(20 + index)
             api[node_id] = {'class_type': 'LoadImage', 'inputs': {'image': ref}}
             api['5']['inputs'][f'ref_images.ref_image_{index}'] = [node_id, 0]
-        for index, clip in enumerate(ref_audios or [], start=1):
+        for index, clip in enumerate(ref_audios or []):
             node_id = str(30 + index)
             api[node_id] = {'class_type': 'LoadAudio', 'inputs': {'audio': clip}}
             api['5']['inputs'][f'ref_audios.ref_audio_{index}'] = [node_id, 0]

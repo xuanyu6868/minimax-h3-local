@@ -69,23 +69,23 @@
    "height": 416,
    "length": 124,
    "ref_image_size": "match",
-   "ref_images.ref_image_1": [
-    "21",
+   "ref_images.ref_image_0": [
+    "20",
     0
    ],
-   "ref_images.ref_image_2": [
-    "22",
+   "ref_images.ref_image_1": [
+    "21",
     0
    ]
   }
  },
- "21": {
+ "20": {
   "class_type": "LoadImage",
   "inputs": {
    "image": "h3_first.png"
   }
  },
- "22": {
+ "21": {
   "class_type": "LoadImage",
   "inputs": {
    "image": "h3b_last.png"

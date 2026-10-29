@@ -104,6 +104,24 @@
 - [ ] 中断流程未实际触发验证；每档预设仅 1 次，非统计结论
 - 报告：[reports/phase-4b-stability-ui-audio.md](reports/phase-4b-stability-ui-audio.md)
 
+## 第四阶段 C：修通 Ref2VA 界面并收尾（2026-10-30）
+
+- [x] 修复 `build-ui-workflow.py`：删除把 `ref_images.ref_image_0` 改成 `ref_image_0` 的 RENAME，保留分组路径与 `shape=7`
+- [x] 发现并按官方模板与原生节点校正 Autogrow 槽位为**零基**编号（原为 1 基，错）
+- [x] 原生画布新建 Ref2VA 节点、由前端自己序列化，存为对照 `workflows/native_ref2va_single_serialized.json`
+- [x] 界面提交单参考图成功（`03fa592b`，`ref2va_single_00004_.mp4`）
+- [x] 界面提交双参考图成功（`3253dbd2`，`ref2va_dual_00002_.mp4`）
+- [x] 刷新页面后重新导入，连接、分组路径与控件值全部保留
+- [x] `--disable-pinned-memory` 固化为默认，`-EnablePinnedMemory` 为显式对照；argv 已记录
+- [x] 实现 `scripts/guard-memory.py` 主动中断（余量 < 512 MiB，或占比连续两次 ≥ 97%）
+- [x] 用回放读数验证阈值：单次超标不中断、连续两次才中断、缺失读数不作健康解
+- [x] 真实中断测试通过：`execution_interrupted`、`completed=false`、任务确实停止、服务仍健康
+- [x] 回归检查修复并扩到 17 项，全部通过（含 UI 前缀保留、零基槽位、默认预设、中断规则）
+- [x] 新增 [USAGE.md](USAGE.md) 中文使用说明
+- [x] 核实输入素材真实规格：`h3_first.png` 320×320、`h3b_last.png` 736×416、`h3_ref_tone.wav` 32 kHz 单声道
+- [ ] 画质、听感、参考视频、`ref_image_size=max` 仍未验证
+- 报告：[reports/phase-4c-ui-ready.md](reports/phase-4c-ui-ready.md)
+
 ## 第五阶段：优化与备选（未开始）
 
 - [ ] 评估 Turbo、注意力与长视频

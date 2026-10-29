@@ -1,0 +1,52 @@
+{
+  "prompt_id": "replay-headroom",
+  "base_url": "http://127.0.0.1:8188",
+  "started_at": "2026-10-29T23:16:04.146985+00:00",
+  "rules": {
+    "ratio_threshold": 0.97,
+    "headroom_threshold_MiB": 512.0,
+    "consecutive_samples_for_ratio": 2
+  },
+  "dry_run": true,
+  "samples": [
+    {
+      "at": "2026-10-29T23:16:04.146985+00:00",
+      "reading": {
+        "committed_MiB": 39000,
+        "commit_limit_MiB": 41179
+      },
+      "decision": {
+        "action": "hold",
+        "reason": "within limits",
+        "streak": 0,
+        "headroom_MiB": 2179,
+        "ratio": 0.9471
+      }
+    },
+    {
+      "at": "2026-10-29T23:16:04.146985+00:00",
+      "reading": {
+        "committed_MiB": 40800,
+        "commit_limit_MiB": 41179
+      },
+      "decision": {
+        "action": "interrupt",
+        "reason": "headroom 379.0 MiB < 512.0 MiB",
+        "streak": 1,
+        "headroom_MiB": 379,
+        "ratio": 0.9908
+      }
+    }
+  ],
+  "source": "replay",
+  "decision": {
+    "action": "interrupt",
+    "reason": "headroom 379.0 MiB < 512.0 MiB",
+    "streak": 1,
+    "headroom_MiB": 379,
+    "ratio": 0.9908
+  },
+  "ended": "dry-run: would interrupt",
+  "rule_fired": true,
+  "finished_at": "2026-10-29T23:16:04.146985+00:00"
+}

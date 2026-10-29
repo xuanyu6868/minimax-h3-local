@@ -2,6 +2,14 @@
 
 日期：2026-10-30。依据：负责人转述的 ChatGPT 对 `a665118` 的审查意见。
 
+> **勘误提示（2026-10-30，阶段四 C 追加）**
+> 本报告原认定"Ref2VA 界面提交失败属于上游缺陷"，该归因**错误**。实际原因是
+> `scripts/build-ui-workflow.py` 里的 `RENAME` 表主动把 `ref_images.ref_image_1` 改写成
+> `ref_image_1`，丢了 Autogrow 分组路径。已修复，界面提交现已通过，详见
+> [阶段四 C](phase-4c-ui-ready.md) 第 3 节。
+> 另外，本报告使用的 Autogrow 槽位编号是从 1 开始，也是错的：schema 与官方模板都是零基。
+> 两处均已在阶段四 C 更正并加了回归检查。
+
 本轮只在本机隔离环境内操作，未修改系统页面文件、显卡驱动或全局环境变量。
 
 ## 1. 结论速览（按维度分开，不合并成"通过"）
@@ -10,7 +18,7 @@
 |---|---|---|
 | 运行通过 | T2V 界面提交、Ref2VA 单图 API、参考音频对照与实验均 `completed=true` + `status_str=success`，产物真实存在 | 第 5、6 节 |
 | 资源条件通过 | 仅在使用 `--disable-pinned-memory` 时成立：Committed 峰值 38,245 MiB、最小提交余量 2,934 MiB、零阈值突破 | 第 3、4 节 |
-| 界面通过 | **部分通过**。T2V 经界面导入并提交成功；Ref2VA 经界面提交**失败**，暴露真实缺陷 | 第 5 节 |
+| 界面通过 | **当时未通过**（Ref2VA 报 `TypeError`），归因有误，已在阶段四 C 修通 | 第 5 节 |
 | 画质通过 | **未验证**。未逐帧检查画面与提示词、参考图的一致性 | 第 7 节 |
 | 听感通过 | **未验证**。未试听任何音轨 | 第 7 节 |
 
@@ -50,15 +58,15 @@ $ConstraintsFile = Join-Path $RepoRoot 'torch-constraints.txt'
 3. 传 `-StopExisting` 才停止，并循环等待端口真正释放。
 4. 启动后以**监听端口的进程**作为 `server_pid` 写入 `comfyui.pid` 和 launch JSON。
 
-这里有一个容易误判的细节：`D:\AI\MiniMaxH3\.venv\Scripts\python.exe` 启动后，实际服务进程是运行在基础解释器下的子进程（本机为 `C:\Users\...\Python312\python.exe`）。`.venv\pyvenv.cfg` 的 `home` 就指向它，`include-system-site-packages = false`，因此这是 venv 的正常转发，不是用到全局环境。判断隔离性要看 `torch` 版本（`2.10.0+cu130`），而不是看父进程的 exe 路径。上一轮我把 pid 文件写成了这套转发链的末端，本轮已修正为监听进程。
+这里有一个容易误判的细节：`D:\AI\MiniMaxH3\.venv\Scripts\python.exe` 启动后，实际服务进程是运行在基础解释器下的子进程（本机为 `C:\Users\<user>\...\Python312\python.exe`）。`.venv\pyvenv.cfg` 的 `home` 就指向它，`include-system-site-packages = false`，因此这是 venv 的正常转发，不是用到全局环境。判断隔离性要看 `torch` 版本（`2.10.0+cu130`），而不是看父进程的 exe 路径。上一轮我把 pid 文件写成了这套转发链的末端，本轮已修正为监听进程。
 
-### 3.3 "已卸载"不作为预填字段
+### 3.3 不把"未加载"写成"已卸载"
 
 上一版 launch JSON 里预填了 `unloaded_model`，读起来像"已确认卸载"。现在该字段改名为 `other_model_present_on_disk` / `other_model_file`，含义只是"这个文件本次没有加载"，并注明：卸载只能由运行窗口内的显存/工作集读数证明。
 
 ## 4. 内存预设对比（一次只改一项）
 
-README 中 `--help` 的原始输出确认了 `--disable-pinned-memory` 存在，且默认日志会打印 `Enabled pinned memory 12761.0`。本轮只改这一项，其他参数保持 `--reserve-vram 1.0` 等不变。
+`main.py --help` 的原始输出确认了 `--disable-pinned-memory` 存在，且默认日志会打印 `Enabled pinned memory 12761.0`。本轮只改这一项，其他参数保持 `--reserve-vram 1.0` 等不变。
 
 测试条件固定：Ref2VA 单参考图、`ref_image_size=match`、736×416、124 帧、20 步、24fps、种子 12345。
 
@@ -67,7 +75,7 @@ README 中 `--help` 的原始输出确认了 `--disable-pinned-memory` 存在，
 | preset_baseline | 默认（pinned 启用） | 156.37 s | 11,485 / 10,868 MiB | **18,715 MiB** | **28,586 MiB** | 1,879 MiB | **49,345 MiB** | **420 MiB** @05:56:07 | **0.9913** | **29 / 12** |
 | preset_nopin | `--disable-pinned-memory` | 150.38 s | 11,432 / 10,542 MiB | **7,733 MiB** | **17,754 MiB** | 12,082 MiB | **38,245 MiB** | **2,934 MiB** @06:10:06 | 0.9287 | **0 / 0** |
 
-中断监测规则（仅本轮测试阈值，不宣称是硬件要求）：提交余量 < 512 MiB，或提交占比连续两次采样 ≥ 97%，即请求中断。基线组确实触发了该规则（29 个样本、最长连续 12 次），但按指令本轮只做**观察与记录**，没有真的中断任务；对照组零触发。
+中断监测规则（仅本轮测试阈值，不宣称是硬件要求）：提交余量 < 512 MiB，或提交占比连续两次采样 ≥ 97%，即请求中断。基线组确实越过了该规则（29 个样本、最长连续 12 次），但**当时只做了事后统计，没有任何中断代码**；主动中断已在阶段四 C 实现并验证。
 
 差值（同一工作流、同一文件）：
 
@@ -79,7 +87,7 @@ README 中 `--help` 的原始输出确认了 `--disable-pinned-memory` 存在，
 
 产物 SHA256 两组完全相同（`f32bc5c8…`），说明禁用 pinned memory 不改变结果，只改变内存驻留方式。
 
-**结论**：`--disable-pinned-memory` 是本机唯一有实测依据的基础预设调整，已通过本轮监测条件。它未被设为默认值——脚本要求显式传参，避免在未复核的情况下改变已有基线。
+**结论**：`--disable-pinned-memory` 是本机唯一有实测依据的基础预设调整，已通过本轮监测条件。当时未设为默认，需显式传参；该预设已在阶段四 C 固化为默认。
 
 ## 5. 界面交付
 
@@ -99,31 +107,38 @@ README 中 `--help` 的原始输出确认了 `--disable-pinned-memory` 存在，
 | 节点重建 | 15 个全部重建，`missing = 0` |
 | 连线 | 19 条全部解析到源节点 |
 | UNETLoader 可选值 | `minimax_h3_fl2va_pruned_w6a8` / `minimax_h3_ref2va_pruned_w6a8`，当前选中 Ref2VA |
-| 条件节点输入 | `clip←CLIPLoader(2)`、`vae←VAELoader(3)`、`audio_vae←VAELoader(4)`、`ref_image_1←LoadImage(21)` 全部已连接 |
+| 条件节点输入 | `clip` ← CLIPLoader(2)、`vae` ← VAELoader(3)、`audio_vae` ← VAELoader(4)、参考图 ← LoadImage(21)，全部已连接 |
 | 控件值 | prompt / width 736 / height 416 / length 124 / ref_image_size match |
 | 节点报错 | 无 |
 | 参考图预览 | 画布上 LoadImage 显示红色圆形缩略图 |
 
-截图：`reports/evidence/ui/ref2va-ui-imported.png`、`reports/evidence/ui/ref2va-ui-node-detail.png`、`reports/evidence/ui/t2v-ui-run-success.png`。截图为本地画布，未包含任何个人信息。
+截图：`reports/evidence/ui/ref2va-ui-imported.png`、`reports/evidence/ui/ref2va-ui-node-detail.png`、`reports/evidence/ui/t2v-ui-run-success.png`。截图只含本地画布，未包含个人信息。
 
-### 5.3 经界面提交（关键结果）
+### 5.3 经界面提交
 
 **T2V：成功。** 通过 `app.graphToPrompt()` 取前端转换后的 prompt 并提交，`prompt_id = 3be89230-01e6-4457-8a01-dad76cf47d9a`，`status_str = success`，产物 `baseline_t2v_00002_.mp4`，736×416 / 124 帧 / 24 fps。
 
 **Ref2VA 单参考图：失败。** `prompt_id = 009c1fcf-71ba-45b6-b32e-63e2ec4c2fa9`，`status_str = error`：
 
-```
+```text
 node_type: MiniMaxH3ReferenceToVideo
 exception_message: MiniMaxH3ReferenceToVideo.execute() got an unexpected keyword argument 'ref_image_1'
 ```
 
-原因：前端把 Autogrow 输入展开成**扁平键** `ref_image_1` 提交，而后端 `execute()` 只接受 `ref_images` 这个字典参数。`comfy_api/latest/_io.py` 的 `build_nested_inputs()` 依赖 `v3_data["dynamic_paths"]` 才能把扁平键重组回嵌套字典，而这条信息不在提交的 prompt 里，所以重组没有发生。
+表层原因是前端把 Autogrow 输入以扁平键 `ref_image_1` 提交，而后端 `execute()` 只接受 `ref_images`
+字典参数；`comfy_api/latest/_io.py` 的 `build_nested_inputs()` 依赖 `v3_data["dynamic_paths"]`
+才能把扁平键重组回嵌套字典，而这条信息不在提交的 prompt 里。
 
-**这一条是本轮最重要的发现**：它能被 `/object_info` 检查完全漏过——节点存在、类型正确、下拉框可选、连线上屏，只有真正从界面提交才会报错。这也证明上一轮"界面未验证"的保留是正确的。
+这一条能被 `/object_info` 检查完全漏过：节点存在、类型正确、下拉框可选、连线上屏，
+只有真正从界面提交才会报错。
 
-同时暴露了 `build-ui-workflow.py` 自身的一个缺陷：`last_node_id` 用了 API 的节点数量而不是最大节点 ID，导致 LoadImage(21) 超出范围。已修正为 `max(节点 id)`。这不是运行失败的原因，但会干扰后续手工编辑。
+**但根因在我的转换器。** 我当时判断为"固定版 ComfyUI / 前端的行为，需上游处理"，这是错误的。
+`scripts/build-ui-workflow.py` 的 `RENAME` 表主动把 `ref_images.ref_image_1` 改写成 `ref_image_1`，
+丢了分组路径，而仓库里的官方 R2V 模板一直保留完整前缀。该缺陷已在阶段四 C 修复，
+界面提交现已通过单图与双图。
 
-处理方式：**未修改 ComfyUI 源码**（固定版本的补丁会破坏可复现性），改为在报告中记录该阻塞，界面路径的 Ref2VA 验收判定为未通过。API 路径的 Ref2VA 结论不受影响，因为 API 形式显式传的是 `ref_images.ref_image_1`。
+顺带发现 `build-ui-workflow.py` 的另一个缺陷：`last_node_id` 用了 API 的节点数量而不是最大节点 ID，
+导致 LoadImage(21) 超出范围。已修正为 `max(节点 id)`；这不是运行失败的原因，但会干扰手工编辑。
 
 ## 6. 参考音频
 
@@ -136,7 +151,11 @@ exception_message: MiniMaxH3ReferenceToVideo.execute() got an unexpected keyword
 
 ### 6.2 schema 与命名
 
-运行时 `/object_info` 确认 `ref_audios` 为 `COMFY_AUTOGROW_V3`，前缀 `ref_audio_`，0–3 个；`audio_vae` 必须连接，否则参考音频只作用于文本编码器。API 键名沿用已验证的带组前缀形式 `ref_audios.ref_audio_1`。服务端接受，说明命名规则与图片一致。
+运行时 `/object_info` 确认 `ref_audios` 为 `COMFY_AUTOGROW_V3`，前缀 `ref_audio_`，0–3 个；`audio_vae` 必须连接，否则参考音频只作用于文本编码器。
+
+本轮使用的键名是 `ref_audios.ref_audio_1`，服务端接受。但**这也是错的**：Autogrow 槽位是零基编号，
+`min=0` 只是允许从任意序号起步，因此节点第 2 个槽位实际对应提示词里的 `<Picture 1>`，整体错位一格。
+零基编号已在阶段四 C 校正为 `ref_image_0` / `ref_audio_0`，并加了回归检查。
 
 角色分工：`<Picture 1>` 控制画面主体外观，`<Audio 1>` 控制音轨内容；两者通过同一个 `MiniMaxH3ReferenceToVideo` 节点的 `ref_images` 与 `ref_audios` 分组传入。
 
@@ -160,7 +179,8 @@ exception_message: MiniMaxH3ReferenceToVideo.execute() got an unexpected keyword
 | 音轨峰值 | 0.0604 | **0.5758** |
 | 音轨 PCM SHA256 | `e0b05f69…` | `03efa688…` |
 
-结论：参考音频**确实进入了生成**——124 帧全部改变、音轨能量提升约 107 倍且 PCM 完全不同。"音轨存在"本身不算证据；这里的证据是"加入参考音频后输出发生了系统性变化"。
+结论：参考音频**确实进入了生成**——124 帧全部改变、音轨能量提升约 107 倍且 PCM 完全不同。
+"音轨存在"本身不算证据；这里的证据是"加入参考音频后输出发生了系统性变化"。
 
 **但这只证明生效，不证明是按要求生效。** 未试听，无法判断生成的音轨是否真的复现了那段三音动机。听感判定为未验证。
 
@@ -171,27 +191,27 @@ exception_message: MiniMaxH3ReferenceToVideo.execute() got an unexpected keyword
 | 无参考音频 | 11,489 MiB | 17,912 MiB | 12,382 MiB | 38,597 MiB | 2,582 MiB | 0 |
 | 一条参考音频 | 11,460 MiB | 17,881 MiB | 12,446 MiB | 38,637 MiB | 2,542 MiB | 0 |
 
-单条 3 秒参考音频没有显著增加负担（各指标差异均在 40 MiB 内），未触发中断规则。
+单条 3 秒参考音频没有显著增加负担（各指标差异均在 40 MiB 内），未越过监测阈值。
 
 ## 7. 未通过 / 未验证
 
-- **界面路径 Ref2VA 未通过**：`ref_image_1` 扁平键在 `MiniMaxH3ReferenceToVideo` 上报 `TypeError`。这是固定版 ComfyUI / 前端的行为，未修改源码，需上游处理或改用 API 形式。
+- **界面路径 Ref2VA 当时未通过**：根因是我的 `RENAME` 丢分组路径，已在阶段四 C 修复。
 - **画质未验证**：未逐帧核对参考图身份保持、双图角色分离、运动方向。
 - **听感未验证**：未试听任何音轨，包括对照与实验两组。
 - **`ref_image_size=max` 未测**。
 - **参考视频通路（`ref_videos` / `ref_video_audios`）完全未测**。
 - **未测多音频（≥2）与音频+视频组合**。
-- **未量化换页**：仍只有提交量与上限，没有页面文件读写速率。
-- **中断监测未真正触发过**：基线组达到阈值，但按指令本轮只记录，未执行中断流程，因此"中断后任务确实停止"未经验证。
+- **未量化换页**：只有提交量与上限，没有页面文件读写速率。
+- **主动中断当时未实现**：只有事后统计，已由阶段四 C 补上并验证。
 - **每档预设只跑了一次**，样本量为 1，不构成统计意义上的稳定性结论。
 
 ## 8. 复现步骤
 
 ```powershell
 # 1. 以禁用 pinned memory 启动（自动记录 launch JSON 与真实 PID）
-powershell -File scripts\start-comfyui.ps1 -ModelSet ref2va -StopExisting -ExtraArgs '--disable-pinned-memory'
+powershell -File scripts\start-comfyui.ps1 -ModelSet ref2va -StopExisting
 
-# 2. 资源采样（新列含同一时刻的提交余量与占比）
+# 2. 资源采样（含同一时刻的提交余量与占比）
 powershell -File scripts\sample-resources.ps1 -OutFile D:\AI\MiniMaxH3\samples\x.csv
 
 # 3. 参考音频素材与工作流

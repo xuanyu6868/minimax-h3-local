@@ -1,0 +1,109 @@
+{
+  "label": "forced_interrupt_test",
+  "prompt_id": "d99630fe-53b8-49f5-b787-3953bda3113d",
+  "started_at": "2026-10-29T23:21:58.644804+00:00",
+  "note": "Thresholds deliberately bypassed: this proves the interrupt path, not a real low-memory event.",
+  "samples": [
+    {
+      "at": "2026-10-29T23:21:58.958661+00:00",
+      "running": true,
+      "committed_MiB": 26180.6,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 14991.1,
+      "ratio": 0.6359
+    },
+    {
+      "at": "2026-10-29T23:22:04.262870+00:00",
+      "running": true,
+      "committed_MiB": 36331.6,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 4840.0,
+      "ratio": 0.8824
+    },
+    {
+      "at": "2026-10-29T23:22:09.529133+00:00",
+      "running": true,
+      "committed_MiB": 33283.2,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 7888.4,
+      "ratio": 0.8084
+    },
+    {
+      "at": "2026-10-29T23:22:14.781744+00:00",
+      "running": true,
+      "committed_MiB": 38868.6,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 2303.1,
+      "ratio": 0.9441
+    },
+    {
+      "at": "2026-10-29T23:22:20.029890+00:00",
+      "running": true,
+      "committed_MiB": 38687.0,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 2484.7,
+      "ratio": 0.9397
+    },
+    {
+      "at": "2026-10-29T23:22:25.313439+00:00",
+      "running": true,
+      "committed_MiB": 38679.5,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 2492.1,
+      "ratio": 0.9395
+    },
+    {
+      "at": "2026-10-29T23:22:30.593093+00:00",
+      "running": true,
+      "committed_MiB": 38862.4,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 2309.3,
+      "ratio": 0.9439
+    },
+    {
+      "at": "2026-10-29T23:22:35.849719+00:00",
+      "running": true,
+      "committed_MiB": 38718.3,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 2453.4,
+      "ratio": 0.9404
+    },
+    {
+      "at": "2026-10-29T23:22:41.113309+00:00",
+      "running": true,
+      "committed_MiB": 38690.5,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 2481.1,
+      "ratio": 0.9397
+    },
+    {
+      "at": "2026-10-29T23:22:46.357379+00:00",
+      "running": true,
+      "committed_MiB": 38674.6,
+      "commit_limit_MiB": 41171.7,
+      "headroom_MiB": 2497.0,
+      "ratio": 0.9394
+    }
+  ],
+  "before_interrupt": {
+    "running": true
+  },
+  "interrupt_request": {
+    "method": "interrupt",
+    "was_running": true,
+    "was_pending": false
+  },
+  "stopped": true,
+  "final_status": {
+    "status_str": "error",
+    "completed": false,
+    "interrupted": true,
+    "message_kinds": [
+      "execution_start",
+      "execution_cached",
+      "execution_interrupted"
+    ]
+  },
+  "finished_at": "2026-10-29T23:22:53.398782+00:00",
+  "verified_stopped": true
+}

@@ -1,7 +1,7 @@
 {
  "id": "h3-ui-controlled",
  "revision": 0,
- "last_node_id": 21,
+ "last_node_id": 20,
  "last_link_id": 19,
  "nodes": [
   {
@@ -227,7 +227,9 @@
      "link": null
     },
     {
-     "name": "ref_image_1",
+     "name": "ref_images.ref_image_0",
+     "label": "ref_image_0",
+     "shape": 7,
      "type": "IMAGE",
      "link": 4
     }
@@ -673,7 +675,7 @@
    ]
   },
   {
-   "id": 21,
+   "id": 20,
    "type": "LoadImage",
    "pos": [
     1480,
@@ -744,7 +746,7 @@
   ],
   [
    4,
-   21,
+   20,
    0,
    5,
    8,

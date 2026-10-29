@@ -45,12 +45,23 @@
 | Ref2VA 参考图 | 单图 160.72 s、双图 170.23 s 通过，规格全对 |
 | 内存预设 | 默认提交峰值 49,345 MiB；`--disable-pinned-memory` 后 38,245 MiB |
 | 参考音频 | 对照 + 实验通过，124 帧全不同、音频 RMS 0.0019 → 0.1998 |
-| 界面验收 | T2V 经画布提交成功；**Ref2VA 经画布提交失败**（`ref_image_1` 扁平键） |
+| 界面验收 | T2V、Ref2VA 单图与双图均经画布提交成功 |
+| 内存默认预设 | 默认 `--disable-pinned-memory`（`-EnablePinnedMemory` 可对照） |
+| 主动中断 | 已实现并验证（回放测阈值 + 真实中断） |
 | Ref2VA 参考视频 | 未测 |
 | 画质与听感 | **待人工确认** |
+
+## 快速开始
+
+见 [USAGE.md](USAGE.md)。启动：
+
+```powershell
+powershell -File scripts\start-comfyui.ps1 -ModelSet ref2va
+```
 
 - [阶段二 A 报告](reports/phase-2a-runtime.md)
 - [阶段三报告](reports/phase-3-fl2va-smoke.md)
 - [阶段三补正与基线](reports/phase-3b-review-fixes-baseline.md)
 - [阶段四 Ref2VA 参考图](reports/phase-4-ref2va-images.md)
 - [阶段四 B 稳定性 / 界面 / 参考音频](reports/phase-4b-stability-ui-audio.md)
+- [阶段四 C 界面修通与收尾](reports/phase-4c-ui-ready.md)

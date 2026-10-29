@@ -1,0 +1,20 @@
+{
+  "label": "ui_ref2va_single",
+  "submitted_via": "browser canvas: app.graphToPrompt() then POST /prompt",
+  "prompt_id": "03fa592b-6d55-4a7e-8eab-48e8f5342505",
+  "status_str": "success",
+  "completed": true,
+  "status_source": "live /history response captured during the run",
+  "workflow": "d:\\Minimax H3\\workflows\\ui_ref2va_single_controlled.json",
+  "workflow_sha256": "febf178d80e749d0c2dad79610f433cd20b9fbc424dffc8a0bee77b367867110",
+  "artifacts": [
+    {
+      "filename": "ref2va_single_00004_.mp4",
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\ref2va_single_00004_.mp4",
+      "exists": true,
+      "size_bytes": 720158,
+      "sha256": "cf00ec443c4a645cd9f99e826607e616bca9d1f74f5216ec66856062635c515e"
+    }
+  ],
+  "recorded_at": "2026-10-29T23:26:29.024305+00:00"
+}

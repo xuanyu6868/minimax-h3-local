@@ -1,0 +1,20 @@
+{
+  "label": "ui_t2v",
+  "submitted_via": "browser canvas: app.graphToPrompt() then POST /prompt",
+  "prompt_id": "3be89230-01e6-4457-8a01-dad76cf47d9a",
+  "status_str": "success",
+  "completed": true,
+  "status_source": "live /history response captured during the run",
+  "workflow": "d:\\Minimax H3\\workflows\\ui_t2v_controlled.json",
+  "workflow_sha256": "f9b1d95d988a2c1cf0ce91090b5ff8311dfd785f2f6cb45e2f2179cb2c2b17df",
+  "artifacts": [
+    {
+      "filename": "baseline_t2v_00002_.mp4",
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_t2v_00002_.mp4",
+      "exists": true,
+      "size_bytes": 305754,
+      "sha256": "f7c75e90cc1851c65f86e6285060a050518e7ac50a6c68e3ec6953cb15a43623"
+    }
+  ],
+  "recorded_at": "2026-10-29T23:26:29.025934+00:00"
+}
