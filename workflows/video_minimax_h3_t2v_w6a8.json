@@ -617,7 +617,7 @@
               "models": [
                 {
                   "name": "minimax_h3_video_vae_int8_convrot.safetensors",
-                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_int8_convrot.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/vae/minimax_h3_video_vae_int8_convrot.safetensors",
                   "directory": "vae"
                 }
               ]
@@ -671,7 +671,7 @@
               "models": [
                 {
                   "name": "minimax_h3_audio_vae_fp32.safetensors",
-                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/vae/minimax_h3_audio_vae_fp32.safetensors",
                   "directory": "vae"
                 }
               ]
@@ -1024,18 +1024,18 @@
               "Node name for S&R": "UNETLoader",
               "models": [
                 {
-                  "name": "diffusion_models/minimax_h3_fl2va_pruned_w6a8.safetensors",
-                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_fl2va_pruned_w6a8.safetensors",
+                  "name": "minimax_h3_fl2va_pruned_w6a8.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors",
                   "directory": "diffusion_models"
                 }
               ]
             },
             "widgets_values": [
-              "diffusion_models/minimax_h3_fl2va_pruned_w6a8.safetensors",
+              "minimax_h3_fl2va_pruned_w6a8.safetensors",
               "default"
             ],
             "widgets_values_named": {
-              "unet_name": "diffusion_models/minimax_h3_fl2va_pruned_w6a8.safetensors",
+              "unet_name": "minimax_h3_fl2va_pruned_w6a8.safetensors",
               "weight_dtype": "default"
             }
           },
@@ -1081,7 +1081,7 @@
               "models": [
                 {
                   "name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
-                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+                  "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
                   "directory": "text_encoders"
                 }
               ]

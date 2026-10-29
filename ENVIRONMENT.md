@@ -106,3 +106,18 @@ Memory: 726MiB / 12227MiB（审计时）
 | Ref2VA | 未下载 |
 
 详见 [reports/phase-3-fl2va-smoke.md](reports/phase-3-fl2va-smoke.md)。
+
+## 第三阶段补正更新（2026-10-30）
+
+| 项目 | 结果 |
+|---|---|
+| 依赖一致性 | `uv pip check` 通过，86 包全部兼容；版本见 `reports/dependency-freeze.txt` |
+| 正式基线 | T2V 150.30s / I2V 140.81s / 首尾帧 150.27s / T2V 复跑 130.20s |
+| 规格 | 736×416、124 帧、24fps、5.167s，含 AAC 32kHz 双声道 |
+| 采样 | 2 秒间隔；GPU 峰值 11,499 / 11,469 MiB |
+| 进程内存峰值 | 18.72 GiB（仅复跑用例有效） |
+| 系统可用内存最低 | 1,552 / 2,024 MiB |
+| 提交内存峰值 | 49,902 / 48,679 MiB |
+| OOM | 未发生 |
+
+详见 [reports/phase-3b-review-fixes-baseline.md](reports/phase-3b-review-fixes-baseline.md)。

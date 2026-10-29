@@ -1,0 +1,24 @@
+{
+  "label": "i2v_baseline_736x416_124f_20s",
+  "workflow": "D:\\Minimax H3\\workflows\\baseline_i2v_api.json",
+  "workflow_sha256": "48656916548101f513249d6471e011c22f70525bbffcac4e7400a260341f36fb",
+  "submitted_at": "2026-10-29T20:16:35.112961+00:00",
+  "prompt_id": "d718397d-0115-4482-b30b-e1c9f81e3b6a",
+  "result": "success",
+  "completed": true,
+  "status_str": "success",
+  "elapsed_seconds": 140.81,
+  "artifacts": [
+    {
+      "node_id": "14",
+      "filename": "baseline_i2v_00001_.mp4",
+      "subfolder": "h3",
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_i2v_00001_.mp4",
+      "exists": true,
+      "size_bytes": 372029,
+      "sha256": "9dd7669ea26d44bc3e8cadc727495dde19eaeaa2da1a06de13aec2c2365aec0a"
+    }
+  ],
+  "task_completed": true,
+  "video_present": true
+}

@@ -1,0 +1,24 @@
+{
+  "label": "flf_baseline_736x416_124f_20s",
+  "workflow": "D:\\Minimax H3\\workflows\\baseline_flf_api.json",
+  "workflow_sha256": "5084805653c4130e024ed89decb0b4f65dd566b193b51359fba5e19752cbca4b",
+  "submitted_at": "2026-10-29T20:19:16.850782+00:00",
+  "prompt_id": "97d05235-c6db-4dd2-948e-7525ac1c843b",
+  "result": "success",
+  "completed": true,
+  "status_str": "success",
+  "elapsed_seconds": 150.27,
+  "artifacts": [
+    {
+      "node_id": "14",
+      "filename": "baseline_flf_00001_.mp4",
+      "subfolder": "h3",
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_flf_00001_.mp4",
+      "exists": true,
+      "size_bytes": 428198,
+      "sha256": "a105053054c20a517583cc33b1c4fbd879089ba99a7bfd03910079fd014629f0"
+    }
+  ],
+  "task_completed": true,
+  "video_present": true
+}

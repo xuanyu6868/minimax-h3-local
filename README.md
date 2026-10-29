@@ -31,4 +31,19 @@
 - [模型清单](MODEL_MANIFEST.md)
 - [风险](RISKS.md)
 
-**首选路线：ComfyUI 0.38.0+ 原生 H3 工作流，W6A8 双扩散模型、NVFP4-AWQ 文本编码器和官方双 VAE。** 备选为 ComfyUI-GGUF 与 WanGP 的独立低显存运行时。部署须另行批准。
+**首选路线：ComfyUI 0.42.1 原生 H3 工作流，W6A8 FL2VA 扩散模型、NVFP4-AWQ 文本编码器和官方双 VAE。** 已完成 T2V、I2V、首尾帧正式基线验收；Ref2VA 与质量评估尚未完成。
+
+## 当前状态（2026-10-30）
+
+| 项目 | 状态 |
+|---|---|
+| 隔离运行环境 | 已建立（`D:\AI\MiniMaxH3`） |
+| CUDA / PyTorch | 2.10.0+cu130，实算通过 |
+| FL2VA 模型集 | 已下载并校验（35,087,209,179 bytes） |
+| 正式基线 | 736×416 / 124 帧 / 20 步 / 24fps 通过 |
+| Ref2VA | 未下载 |
+| 画质与听感 | **待人工确认** |
+
+- [阶段二 A 报告](reports/phase-2a-runtime.md)
+- [阶段三报告](reports/phase-3-fl2va-smoke.md)
+- [阶段三补正与基线](reports/phase-3b-review-fixes-baseline.md)

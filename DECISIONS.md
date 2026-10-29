@@ -20,10 +20,18 @@
 
 12. **固定 ComfyUI v0.42.1 提交 `63be2f9b82ad0dac88a7ceaa28a9cf3154125a18`。** 官方稳定版，满足 W6A8 的 0.38.0+ 下限；不以“最新版”作为版本依据。
 13. **固定 PyTorch 2.10.0+cu130。** 来源为 PyTorch 官方 cu130 轮子索引；驱动报告的 CUDA UMD 13.4 不等于已安装 Toolkit。
-14. **ComfyUI 依赖必须用 `--no-deps` 安装。** 实测 `requirements.txt` 的无版本 `torch` 会把 CUDA 构建替换为 2.15.0，导致 `c10_cuda.dll` 加载失败。脚本已固化该步骤及安装后 CUDA 断言。
+14. **ComfyUI 依赖必须用 `--no-deps` 安装。**（2026-10-30 被第 16 条取代，保留历史）实测 `requirements.txt` 的无版本 `torch` 会把 CUDA 构建替换为 2.15.0，导致 `c10_cuda.dll` 加载失败。
 15. **运行环境位于 `D:\AI\MiniMaxH3`。** 汇报仓库保持在 `d:\Minimax H3`，不改全局 Python、驱动、页面文件或系统环境变量。
 
-## 推测 / 工程预期（未实测）
+## 第三阶段补正新增（2026-10-30）
+
+16. **依赖锁定改为约束 + lock 文件。** `--no-deps` 不作为依赖完整性保证；使用 `torch-constraints.txt` 约束 CUDA 三件套，`uv pip compile` 生成 `requirements.lock.txt`，`uv pip sync` 应用，安装后断言 CUDA 可用。
+17. **已有环境目录不得自动重置。** 非空目录必须是干净且 HEAD 等于固定提交的 git 仓库，否则报错退出。
+18. **工作流中的加载器名与下载 URL 路径必须分离，且 URL 固定修订。** 加载器只用文件名；URL 使用 `resolve/<commit>/<dir>/<file>`。
+19. **“任务完成”不等于“视频验收通过”。** 成功任务必须定位到真实产物并记录大小与 SHA256，否则单独标记。
+20. **性能数字必须来自定时采样并注明间隔。** 2 秒采样的统计值不表述为硬件精确峰值；复跑更快视为缓存差异，不作为加速结论。
+
+## 第一阶段容量复核结论
 
 - W6A8 + NVFP4-AWQ 比官方默认 INT8 ConvRot 更适合 12GB VRAM + 32GB RAM，但采样/解码峰值可能仍造成 OOM 或换页。
 - 先 FL2VA 后 Ref2VA 可降低下载与排障复杂度，不影响最终功能覆盖。

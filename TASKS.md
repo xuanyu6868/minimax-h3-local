@@ -50,6 +50,20 @@
 - [x] 记录峰值 VRAM/RAM：详见 [reports/phase-3-fl2va-smoke.md](reports/phase-3-fl2va-smoke.md)
 - [ ] 正式时长（≥124 帧）与画质评估（未开始）
 
+## 第三阶段补正：脚本修复与正式基线（2026-10-30）
+
+- [x] 修正 install-runtime.ps1 首次检出顺序，拒绝重置已有改动目录
+- [x] 改用约束文件 + lock 文件，不再依赖 `--no-deps`；记录实际依赖版本
+- [x] 修正 patch-workflow-w6a8.py 加载器名与 URL 路径分离，并固定全部模型 URL 修订
+- [x] 重写 run-workflow.py 完成判定、失败/超时退出码、产物校验与证据记录
+- [x] 8 项回归检查全部通过
+- [x] 界面工作流实际导入验证：模型可选、子图完整、无缺失节点
+- [x] 正式基线：T2V / I2V / 首尾帧 736×416、124 帧、20 步、24fps 全部通过
+- [x] T2V 同规格复跑通过（130.20 s）
+- [x] 2 秒间隔资源采样与媒体规格核查
+- [ ] 画质与听感人工确认（未观看画面、未试听音轨）
+- 报告：[reports/phase-3b-review-fixes-baseline.md](reports/phase-3b-review-fixes-baseline.md)
+
 ## 第四阶段：Ref2VA 验收（未开始）
 
 - [ ] 下载并校验 Ref2VA

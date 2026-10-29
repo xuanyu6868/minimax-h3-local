@@ -1,0 +1,24 @@
+{
+  "label": "t2v_repeat_736x416_124f_20s",
+  "workflow": "D:\\Minimax H3\\workflows\\baseline_t2v_repeat_api.json",
+  "workflow_sha256": "ccde95bf412a2fd49c19e8f922d6412a015d3862ef55a38a9e70ab6062ded2c8",
+  "submitted_at": "2026-10-29T20:24:32.383258+00:00",
+  "prompt_id": "3d1439f4-eb11-4957-8fd1-bfe1c577acfd",
+  "result": "success",
+  "completed": true,
+  "status_str": "success",
+  "elapsed_seconds": 130.2,
+  "artifacts": [
+    {
+      "node_id": "14",
+      "filename": "baseline_t2v_repeat_00001_.mp4",
+      "subfolder": "h3",
+      "path": "D:\\AI\\MiniMaxH3\\ComfyUI\\output\\h3\\baseline_t2v_repeat_00001_.mp4",
+      "exists": true,
+      "size_bytes": 304933,
+      "sha256": "a6e4cf7053e327fc76c74377d166d915c03ccb2915f39d2862b0b7a2b31d14e3"
+    }
+  ],
+  "task_completed": true,
+  "video_present": true
+}
